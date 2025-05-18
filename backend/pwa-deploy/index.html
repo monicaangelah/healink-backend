@@ -8,14 +8,29 @@
 <body>
   <h1>Realtime Sensor Data</h1>
   <div id="realtime"></div>
+  <!-- Tempat untuk menampilkan status triase -->
+  <div id="triase-notif" style="font-weight: bold; margin-top: 10px;"></div>
+
   <h2>History</h2>
   <ul id="history"></ul>
 
   <script>
     const realtimeDiv = document.getElementById('realtime');
     const historyList = document.getElementById('history');
+    const triaseNotif = document.getElementById('triase-notif');
 
-    const ws = new WebSocket('wss://healink-backend-production.up.railway.app');
+    // Fungsi untuk menentukan status triase berdasarkan spo2, temperature, dan bpm
+    function getTriaseStatus(spo2, temp, bpm) {
+      if (spo2 < 90 || temp > 38.5 || bpm > 120 || bpm < 60) {
+        return 'Merah';
+      }
+      if ((spo2 >= 90 && spo2 < 95) || (temp >= 37.5 && temp <= 38.5) || (bpm > 100 && bpm <= 120)) {
+        return 'Kuning';
+      }
+      return 'Hijau';
+    }
+
+    const ws = new WebSocket('ws://' + window.location.host);
 
     ws.onmessage = (event) => {
       const msg = JSON.parse(event.data);
@@ -32,6 +47,17 @@
         // Update realtime div
         realtimeDiv.textContent = `Temp: ${msg.temperature} °C, BPM: ${msg.bpm}, SpO2: ${msg.spo2}`;
 
+        // Tentukan status triase dan tampilkan notifikasi dengan warna
+        const status = getTriaseStatus(msg.spo2, msg.temperature, msg.bpm);
+        triaseNotif.textContent = `Status Triase: ${status}`;
+        if (status === 'Merah') {
+          triaseNotif.style.color = 'red';
+        } else if (status === 'Kuning') {
+          triaseNotif.style.color = 'orange';
+        } else {
+          triaseNotif.style.color = 'green';
+        }
+
         // Tambah data realtime ke history list paling atas
         const li = document.createElement('li');
         li.textContent = `Temp: ${msg.temperature} °C, BPM: ${msg.bpm}, SpO2: ${msg.spo2}, Time: ${new Date().toLocaleString()}`;
@@ -45,9 +71,9 @@
     };
 
     if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then(() => console.log('Service Worker registered successfully'))
-      .catch(err => console.error('Service Worker registration failed:', err));
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(() => console.log('Service Worker registered successfully'))
+        .catch(err => console.error('Service Worker registration failed:', err));
     }
   </script>
 </body>
