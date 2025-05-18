@@ -1,181 +1,201 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-    <link rel="manifest" href="manifest.json" />
-    <link rel="stylesheet" href="css/style.css" />
-    <meta name="theme-color" content="#007bff" />
-    <title>IoT Sensor Dashboard</title>
-    <style>
-      /* Wrapper utama desktop */
-      #app {
-        box-sizing: border-box;
-        position: relative;
-        width: 1440px;
-        height: 1024px;
-        margin: 20px auto; /* agar center di layar */
-        background: #FFFCF8;
-        border: 1px solid #E8E7E7;
-        box-shadow: 0px 4px 90px rgba(0, 0, 0, 0.06);
-        border-radius: 40px;
-        padding: 40px; /* beri ruang isi dalam */
-        overflow-y: auto; /* scroll jika konten overflow */
-        font-family: Arial, sans-serif;
-      }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dashboard IoT</title>
+<style>
+  /* Container utama responsive */
+  #app {
+    box-sizing: border-box;
+    max-width: 1440px;
+    min-width: 320px;
+    width: 90vw;
+    height: 90vh;
+    margin: 20px auto;
+    padding: 20px;
+    background: #FFFCF8;
+    border: 1px solid #E8E7E7;
+    box-shadow: 0 4px 90px rgba(0,0,0,0.06);
+    border-radius: 40px;
 
-      /* Modal overlay */
-      #alertModal {
-        display: none; /* hidden by default */
-        position: fixed;
-        z-index: 9999;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0,0,0,0.5);
-      }
+    display: flex;
+    gap: 20px;
+  }
 
-      /* Modal content */
-      #alertModalContent {
-        background-color: #f44336; /* red background */
-        margin: 15% auto;
-        padding: 20px;
-        border-radius: 8px;
-        width: 80%;
-        max-width: 400px;
-        color: white;
-        font-size: 18px;
-        text-align: center;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      }
+  /* Sidebar kiri: daftar unit */
+  #unitList {
+    flex: 1 1 200px; /* minimal 200px */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+  }
 
-      #closeBtn {
-        margin-top: 15px;
-        background-color: white;
-        color: #f44336;
-        border: none;
-        padding: 10px 20px;
-        font-weight: bold;
-        border-radius: 4px;
-        cursor: pointer;
-      }
+  .unitBtn {
+    padding: 15px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    user-select: none;
+    transition: background-color 0.3s, border-color 0.3s;
+  }
 
-      /* Styling list history agar lebih rapi */
-      #history {
-        max-height: 400px;
-        overflow-y: auto;
-        padding-left: 20px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        background: #fff;
-      }
+  .unitBtn:hover {
+    background-color: #f0f0f0;
+  }
 
-      /* Styling judul */
-      h1, h2 {
-        margin-top: 0;
-      }
+  .unitBtn.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #0056b3;
+  }
 
-      /* Styling realtime data */
-      #realtime {
-        font-size: 20px;
-        font-weight: bold;
-        margin-bottom: 20px;
-      }
-    </style>
+  /* Konten kanan: info sensor dan grafik */
+  #unitDetail {
+    flex: 3 1 600px;
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  #sensorInfo {
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  #chartContainer {
+    flex-grow: 1;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 10px;
+    /* nanti canvas grafik ditempatkan di sini */
+  }
+</style>
 </head>
 <body>
   <div id="app">
-    <h1>Realtime Sensor Data</h1>
-    <div id="realtime"></div>
-    <h2>History</h2>
-    <ul id="history"></ul>
-  </div>
-
-  <!-- Modal popup untuk notifikasi triase -->
-  <div id="alertModal">
-    <div id="alertModalContent">
-      <p><strong>Triase Darurat!</strong></p>
-      <p>Detak jantung, suhu, dan SpO2 berada di luar batas aman selama 1 menit! Segera cek pasien.</p>
-      <button id="closeBtn">Tutup</button>
+    <div id="unitList">
+      <div class="unitBtn active" data-unit="A1">A1</div>
+      <div class="unitBtn" data-unit="A2">A2</div>
+      <div class="unitBtn" data-unit="A3">A3</div>
+      <div class="unitBtn" data-unit="A4">A4</div>
+      <!-- tambah unit lain sesuai kebutuhan -->
+    </div>
+    <div id="unitDetail">
+      <div id="sensorInfo">Pilih unit untuk melihat data sensor</div>
+      <div id="chartContainer">
+        <!-- grafik akan dirender di sini -->
+        <canvas id="sensorChart"></canvas>
+      </div>
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    const realtimeDiv = document.getElementById('realtime');
-    const historyList = document.getElementById('history');
-    const alertModal = document.getElementById('alertModal');
-    const closeBtn = document.getElementById('closeBtn');
+    const unitButtons = document.querySelectorAll('.unitBtn');
+    const sensorInfo = document.getElementById('sensorInfo');
+    const ctx = document.getElementById('sensorChart').getContext('2d');
 
-    const ws = new WebSocket('wss://healink-backend-production.up.railway.app');
+    let currentUnit = 'A1';
 
-    // Threshold batas aman
-    const BPM_THRESHOLD = 50;
-    const TEMP_LOW_THRESHOLD = 35;
-    const TEMP_HIGH_THRESHOLD = 40;
-    const SPO2_THRESHOLD = 90;
-
-    let triaseStartTimestamp = null;
-    let triaseNotified = false;
-
-    closeBtn.onclick = () => {
-      alertModal.style.display = 'none';
-      triaseNotified = false;
-      triaseStartTimestamp = null;
+    // Contoh data sensor simulasi untuk tiap unit (real nanti ambil via WebSocket/MQTT)
+    const sensorData = {
+      'A1': { bpm: 75, temp: 36.7, spo2: 98 },
+      'A2': { bpm: 60, temp: 37.2, spo2: 96 },
+      'A3': { bpm: 80, temp: 36.1, spo2: 95 },
+      'A4': { bpm: 70, temp: 36.8, spo2: 99 }
     };
 
-    ws.onmessage = (event) => {
-      const msg = JSON.parse(event.data);
+    // Contoh data grafik awal (dummy)
+    let chartData = {
+      labels: [],
+      datasets: [{
+        label: 'BPM',
+        data: [],
+        borderColor: 'rgb(255, 99, 132)',
+        fill: false,
+      }, {
+        label: 'Temperature (°C)',
+        data: [],
+        borderColor: 'rgb(54, 162, 235)',
+        fill: false,
+      }, {
+        label: 'SpO2 (%)',
+        data: [],
+        borderColor: 'rgb(75, 192, 192)',
+        fill: false,
+      }]
+    };
 
-      if (msg.type === 'history') {
-        historyList.innerHTML = '';
-        msg.data.forEach(item => {
-          const li = document.createElement('li');
-          li.textContent = `Temp: ${item.temperature} °C, BPM: ${item.bpm}, SpO2: ${item.spo2}, Time: ${new Date(item.created_at).toLocaleString()}`;
-          historyList.appendChild(li);
-        });
-      } else if (msg.type === 'realtime') {
-        const bpm = Number(msg.bpm);
-        const temp = Number(msg.temperature);
-        const spo2 = Number(msg.spo2);
+    let sensorChart = new Chart(ctx, {
+      type: 'line',
+      data: chartData,
+      options: {
+        responsive: true,
+        animation: false,
+        scales: {
+          x: {
+            type: 'realtime', // pakai plugin realtime jika ingin update otomatis
+            realtime: {
+              delay: 2000,
+              onRefresh(chart) {
+                if (!currentUnit) return;
+                // Simulasi data sensor update setiap detik
+                const now = Date.now();
+                chart.data.labels.push(now);
+                const s = sensorData[currentUnit];
+                chart.data.datasets[0].data.push({x: now, y: s.bpm});
+                chart.data.datasets[1].data.push({x: now, y: s.temp});
+                chart.data.datasets[2].data.push({x: now, y: s.spo2});
 
-        realtimeDiv.textContent = `Temp: ${temp} °C, BPM: ${bpm}, SpO2: ${spo2}`;
-
-        const li = document.createElement('li');
-        li.textContent = `Temp: ${temp} °C, BPM: ${bpm}, SpO2: ${spo2}, Time: ${new Date().toLocaleString()}`;
-        historyList.insertBefore(li, historyList.firstChild);
-
-        if (historyList.children.length > 50) {
-          historyList.removeChild(historyList.lastChild);
-        }
-
-        const bpmValid = bpm > 0;
-        const tempValid = temp > 0;
-        const spo2Valid = spo2 > 0;
-
-        const isDangerous = bpmValid && tempValid && spo2Valid && (
-          (bpm < BPM_THRESHOLD) ||
-          (temp < TEMP_LOW_THRESHOLD || temp > TEMP_HIGH_THRESHOLD) ||
-          (spo2 < SPO2_THRESHOLD)
-        );
-
-        if (isDangerous) {
-          if (!triaseStartTimestamp) {
-            triaseStartTimestamp = Date.now();
-            triaseNotified = false;
-          } else {
-            const elapsed = Date.now() - triaseStartTimestamp;
-            if (elapsed >= 60000 && !triaseNotified) {
-              alertModal.style.display = 'block';
-              triaseNotified = true;
+                // Batasi data max 30 point
+                chart.data.labels = chart.data.labels.slice(-30);
+                chart.data.datasets.forEach(ds => ds.data = ds.data.slice(-30));
+              }
             }
+          },
+          y: {
+            beginAtZero: true
           }
-        } else {
-          triaseStartTimestamp = null;
-          triaseNotified = false;
-          alertModal.style.display = 'none';
         }
       }
-    };
+    });
+
+    // Fungsi update info sensor di samping kanan
+    function updateSensorInfo(unit) {
+      if (!sensorData[unit]) {
+        sensorInfo.textContent = 'Data tidak tersedia untuk unit ' + unit;
+        return;
+      }
+      const s = sensorData[unit];
+      sensorInfo.textContent = `Unit ${unit} — BPM: ${s.bpm}, Temperature: ${s.temp} °C, SpO2: ${s.spo2}%`;
+    }
+
+    // Saat klik tombol unit
+    unitButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        unitButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentUnit = btn.dataset.unit;
+        updateSensorInfo(currentUnit);
+
+        // Reset grafik data untuk unit baru
+        sensorChart.data.labels = [];
+        sensorChart.data.datasets.forEach(ds => ds.data = []);
+        sensorChart.update();
+      });
+    });
+
+    // Inisialisasi tampilkan data unit A1
+    updateSensorInfo(currentUnit);
   </script>
 </body>
 </html>
