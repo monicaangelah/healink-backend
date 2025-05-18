@@ -308,6 +308,9 @@
     document.getElementById('countGreen').textContent = status === 'Green' ? '1 orang' : '0 orang';
     document.getElementById('countYellow').textContent = status === 'Yellow' ? '1 orang' : '0 orang';
     document.getElementById('countRed').textContent = status === 'Red' ? '1 orang' : '0 orang';
+    // Panggil fungsi cek emergency
+    checkEmergencyStatus(status, '1A');
+
   }
 
   // Update histori text
@@ -392,7 +395,93 @@
     }
   }, 5000);
 
+const overlay = document.getElementById('overlay');
+const emergencyPopup = document.getElementById('emergencyPopup');
+const emergencyUnitCode = document.getElementById('emergencyUnitCode');
+const viewEmergencyBtn = document.getElementById('viewEmergencyBtn');
+const closePopupBtn = document.getElementById('closePopupBtn');
+
+let emergencyStartTime = null;
+let emergencyTimeout = null;
+let currentEmergencyUnit = null;
+
+// Fungsi tampilkan popup darurat
+function showEmergencyPopup(unitCode) {
+  currentEmergencyUnit = unitCode;
+  emergencyUnitCode.textContent = unitCode;
+  overlay.style.display = 'block';
+  emergencyPopup.style.display = 'block';
+}
+
+// Fungsi sembunyikan popup darurat
+function hideEmergencyPopup() {
+  overlay.style.display = 'none';
+  emergencyPopup.style.display = 'none';
+  emergencyStartTime = null;
+  if (emergencyTimeout) {
+    clearTimeout(emergencyTimeout);
+    emergencyTimeout = null;
+  }
+  currentEmergencyUnit = null;
+}
+
+// Logika cek status merah selama 1 menit (60000 ms)
+function checkEmergencyStatus(status, unitCode) {
+  if (status === 'Red') {
+    if (!emergencyStartTime) {
+      emergencyStartTime = Date.now();
+      // Set timeout 1 menit untuk munculkan popup
+      emergencyTimeout = setTimeout(() => {
+        showEmergencyPopup(unitCode);
+      }, 60000);
+    }
+  } else {
+    // Reset jika status bukan merah
+    emergencyStartTime = null;
+    if (emergencyTimeout) {
+      clearTimeout(emergencyTimeout);
+      emergencyTimeout = null;
+    }
+    hideEmergencyPopup();
+  }
+}
+
+// Saat tombol LIHAT ditekan
+viewEmergencyBtn.onclick = () => {
+  // Fokus ke device yang bermasalah di dashboard
+  detailHeader.textContent = currentEmergencyUnit;
+  hideEmergencyPopup();
+};
+
+// Saat tombol X ditekan
+closePopupBtn.onclick = () => {
+  hideEmergencyPopup();
+};
+
 </script>
+
+<!-- Overlay untuk gelapkan latar -->
+<div id="overlay" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);z-index:9998;"></div>
+
+<!-- Popup notifikasi darurat -->
+<div id="emergencyPopup" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:#fff;border-radius:24px;padding:40px 30px;box-shadow:0 8px 30px rgba(0,0,0,0.3);
+  z-index:9999;max-width:400px;min-width:300px;text-align:center;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+  
+  <button id="closePopupBtn" style="position:absolute;top:15px;right:15px;
+    background:none;border:none;font-size:22px;cursor:pointer;font-weight:bold;">×</button>
+  
+  <h1 style="margin-bottom:12px;font-weight:900;">PASIEN DARURAT</h1>
+  
+  <div style="font-size:64px;color:#d32f2f;margin-bottom:12px;">&#9888;</div> <!-- tanda seru segitiga -->
+  
+  <div id="emergencyUnitCode" style="font-weight:900;font-size:36px;margin-bottom:12px;">A1</div>
+  
+  <div style="font-size:18px;margin-bottom:20px;">Segera Ambil Tindakan!</div>
+  
+  <button id="viewEmergencyBtn" style="background:#388e3c;color:#fff;border:none;padding:12px 24px;
+    font-weight:700;font-size:16px;border-radius:8px;cursor:pointer;">LIHAT</button>
+</div>
 
 </body>
 </html>
