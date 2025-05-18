@@ -1,5 +1,26 @@
 <!DOCTYPE html>
 <html>
+<body>
+  <h1>Test Notification</h1>
+  <button id="btn">Request Permission & Test Notification</button>
+  <script>
+    document.getElementById('btn').onclick = () => {
+      Notification.requestPermission().then(permission => {
+        console.log("Permission:", permission);
+        if (permission === 'granted') {
+          setTimeout(() => {
+            console.log("Menampilkan notifikasi");
+            new Notification("Tes Notifikasi Delay", { body: "Ini muncul setelah 5 detik" });
+          }, 5000);
+        }
+      });
+    };
+  </script>
+</body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html>
 <head>
     <link rel="manifest" href="manifest.json" />
     <meta name="theme-color" content="#007bff" />
@@ -118,4 +139,4 @@
     }
   </script>
 </body>
-</html>
+</html> -->
