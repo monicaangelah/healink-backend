@@ -3,177 +3,239 @@
 <head>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#007bff" />
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>HeaLink Dashboard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HeaLink Dashboard</title>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<style>
-  body {
-    margin: 0; padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #FFFCF8;
-    color: #222;
-  }
-  * {
-    box-sizing: border-box;
-  }
-  #app {
-    max-width: 1440px;
-    margin: 20px auto;
-    padding: 20px 30px;
-    background: #FFFCF8;
-    border-radius: 40px;
-    box-shadow: 0 4px 90px rgba(0,0,0,0.06);
-    display: flex;
-    gap: 20px;
-    min-height: 80vh;
-  }
-  #leftPanel {
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  #headerOverview {
-    background: white;
-    padding: 20px;
-    border-radius: 16px;
-    box-shadow: 0 3px 10px rgb(0 0 0 / 0.05);
-    position: relative;
-  }
-  #headerOverview h2 {
-    margin: 0 0 8px 0;
-    font-weight: 700;
-    font-size: 1.8rem;
-  }
-  #clock {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    font-weight: 700;
-    font-size: 1.2rem;
-    color: #444;
-    user-select: none;
-  }
-  #overviewStats {
-    display: flex;
-    gap: 15px;
-    margin-top: 10px;
-  }
-  .statusBox {
-    flex: 1;
-    border-radius: 12px;
-    padding: 12px 20px;
-    font-weight: 700;
-    font-size: 1.2rem;
-    color: #000;
-    text-align: center;
-  }
-  .statusGreen { background: #b8f1cd; }
-  .statusYellow { background: #f8f0ad; }
-  .statusRed { background: #f9c3b0; }
+  <style>
+    body {
+      margin: 0; padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #FFFCF8;
+      color: #222;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    #app {
+      max-width: 1440px;
+      margin: 20px auto;
+      padding: 20px 30px;
+      background: #FFFCF8;
+      border-radius: 40px;
+      box-shadow: 0 4px 90px rgba(0,0,0,0.06);
+      display: flex;
+      gap: 20px;
+      min-height: 80vh;
+    }
+    #leftPanel {
+      flex: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    #headerOverview {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 3px 10px rgb(0 0 0 / 0.05);
+      position: relative;
+    }
+    #headerOverview h2 {
+      margin: 0 0 8px 0;
+      font-weight: 700;
+      font-size: 1.8rem;
+    }
+    #clock {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #444;
+      user-select: none;
+    }
+    #overviewStats {
+      display: flex;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    .statusBox {
+      flex: 1;
+      border-radius: 12px;
+      padding: 12px 20px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #000;
+      text-align: center;
+    }
+    .statusGreen { background: #b8f1cd; }
+    .statusYellow { background: #f8f0ad; }
+    .statusRed { background: #f9c3b0; }
 
-  #unitGrid {
-    display: grid;
-    grid-template-columns: 180px;
-    gap: 20px;
-  }
+    #unitGrid {
+      display: grid;
+      grid-template-columns: 180px;
+      gap: 20px;
+    }
 
-  .unitCard {
-    background: white;
-    border-radius: 16px;
-    padding: 24px 28px;
-    box-shadow: 0 3px 10px rgb(0 0 0 / 0.05);
-    cursor: pointer;
-    position: relative;
-    transition: transform 0.2s ease;
-    user-select: none;
-  }
-  .unitCard:hover {
-    transform: translateY(-5px);
-  }
-  .unitCard.disabled {
-    background: #fff;
-    color: #3b3838;
-    cursor: default;
-    box-shadow: none;
-  }
-  .unitStatus {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 4px 8px;
-    border-radius: 10px;
-    color: #222;
-  }
-  .unitStatus.Green { background: #b8f1cd; }
-  .unitStatus.Yellow { background: #f8f0ad; }
-  .unitStatus.Red { background: #f9c3b0; }
-  .unitCode {
-    font-weight: 900;
-    font-size: 1.6rem;
-    margin-bottom: 12px;
-  }
-  .unitInfo {
-    font-size: 1.1rem;
-    line-height: 1.4;
-  }
-  .unitInfo span {
-    font-weight: 600;
-  }
+    .unitCard {
+      background: white;
+      border-radius: 16px;
+      padding: 24px 28px;
+      box-shadow: 0 3px 10px rgb(0 0 0 / 0.05);
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.2s ease;
+      user-select: none;
+    }
+    .unitCard:hover {
+      transform: translateY(-5px);
+    }
+    .unitCard.disabled {
+      background: #fff;
+      color: #3b3838;
+      cursor: default;
+      box-shadow: none;
+    }
+    .unitStatus {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 10px;
+      color: #222;
+    }
+    .unitStatus.Green { background: #b8f1cd; }
+    .unitStatus.Yellow { background: #f8f0ad; }
+    .unitStatus.Red { background: #f9c3b0; }
+    .unitCode {
+      font-weight: 900;
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+    }
+    .unitInfo {
+      font-size: 1.1rem;
+      line-height: 1.4;
+    }
+    .unitInfo span {
+      font-weight: 600;
+    }
 
-  #rightPanel {
-    flex: 1.3;
-    background: #2e2e2e;
-    border-radius: 40px;
-    padding: 24px 20px 30px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-  }
+    #rightPanel {
+      flex: 1.3;
+      background: #2e2e2e;
+      border-radius: 40px;
+      padding: 24px 20px 30px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
 
-  #detailHeader {
-    font-weight: 900;
-    font-size: 2.2rem;
-    user-select: none;
-  }
+    #detailHeader {
+      font-weight: 900;
+      font-size: 2.2rem;
+      user-select: none;
+    }
 
-  #detailHistory {
-    background: #4a4a4a;
-    border-radius: 16px;
-    padding: 12px 16px;
-    max-height: 200px;
-    overflow-y: auto;
-    font-family: monospace;
-    font-size: 0.9rem;
-    white-space: pre-line;
-    line-height: 1.4;
-  }
+    #detailHistory {
+      background: #4a4a4a;
+      border-radius: 16px;
+      padding: 12px 16px;
+      max-height: 200px;
+      overflow-y: auto;
+      font-family: monospace;
+      font-size: 0.9rem;
+      white-space: pre-line;
+      line-height: 1.4;
+    }
 
-  .chartCard {
-    background: #fff;
-    border-radius: 16px;
-    padding: 10px 12px;
-    color: #000;
-  }
+    .chartCard {
+      background: #fff;
+      border-radius: 16px;
+      padding: 10px 12px;
+      color: #000;
+    }
 
-  .chartCard h3 {
-    margin: 0 0 8px 0;
-    font-weight: 700;
-    text-align: center;
-    font-size: 1.1rem;
-  }
+    .chartCard h3 {
+      margin: 0 0 8px 0;
+      font-weight: 700;
+      text-align: center;
+      font-size: 1.1rem;
+    }
 
-  canvas {
-    max-width: 100%;
-    height: 80px !important;
-  }
-</style>
+    canvas {
+      max-width: 100%;
+      height: 80px !important;
+    }
+
+    /* Popup dan overlay */
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.5);
+      z-index: 9998;
+    }
+    #emergencyPopup {
+      display: none;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      border-radius: 24px;
+      padding: 40px 30px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+      z-index: 9999;
+      max-width: 400px;
+      min-width: 300px;
+      text-align: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    #emergencyPopup button#closePopupBtn {
+      position: absolute;
+      top: 15px; right: 15px;
+      background: none;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    #emergencyPopup h1 {
+      margin-bottom: 12px;
+      font-weight: 900;
+    }
+    #emergencyPopup .warning-icon {
+      font-size: 64px;
+      color: #d32f2f;
+      margin-bottom: 12px;
+    }
+    #emergencyPopup #emergencyUnitCode {
+      font-weight: 900;
+      font-size: 36px;
+      margin-bottom: 12px;
+    }
+    #emergencyPopup .message {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+    #emergencyPopup button#viewEmergencyBtn {
+      background: #388e3c;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      font-weight: 700;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
 
@@ -222,6 +284,17 @@
       <canvas id="chartBpm"></canvas>
     </div>
   </div>
+</div>
+
+<!-- Overlay dan Popup Darurat -->
+<div id="overlay"></div>
+<div id="emergencyPopup">
+  <button id="closePopupBtn">×</button>
+  <h1>PASIEN DARURAT</h1>
+  <div class="warning-icon">&#9888;</div>
+  <div id="emergencyUnitCode">A1</div>
+  <div class="message">Segera Ambil Tindakan!</div>
+  <button id="viewEmergencyBtn">LIHAT</button>
 </div>
 
 <script>
@@ -284,6 +357,50 @@
   // Data histori untuk 1A
   let historyData = [];
 
+  // Timer notifikasi darurat
+  let emergencyStartTime = null;
+  let emergencyTimeout = null;
+  let currentEmergencyUnit = null;
+
+  // Fungsi tampilkan popup darurat
+  function showEmergencyPopup(unitCode) {
+    currentEmergencyUnit = unitCode;
+    document.getElementById('emergencyUnitCode').textContent = unitCode;
+    document.getElementById('overlay').style.display = 'block';
+    document.getElementById('emergencyPopup').style.display = 'block';
+  }
+
+  // Fungsi sembunyikan popup darurat
+  function hideEmergencyPopup() {
+    document.getElementById('overlay').style.display = 'none';
+    document.getElementById('emergencyPopup').style.display = 'none';
+    emergencyStartTime = null;
+    if (emergencyTimeout) {
+      clearTimeout(emergencyTimeout);
+      emergencyTimeout = null;
+    }
+    currentEmergencyUnit = null;
+  }
+
+  // Logika cek status merah selama 1 menit (60000 ms)
+  function checkEmergencyStatus(status, unitCode) {
+    if (status === 'Red') {
+      if (!emergencyStartTime) {
+        emergencyStartTime = Date.now();
+        emergencyTimeout = setTimeout(() => {
+          showEmergencyPopup(unitCode);
+        }, 500);
+      }
+    } else {
+      emergencyStartTime = null;
+      if (emergencyTimeout) {
+        clearTimeout(emergencyTimeout);
+        emergencyTimeout = null;
+      }
+      hideEmergencyPopup();
+    }
+  }
+
   // Fungsi update warna status kotak 1A berdasar sensor
   function updateStatusColor(suhu, bpm, spo2) {
     let status = 'Green';
@@ -308,9 +425,9 @@
     document.getElementById('countGreen').textContent = status === 'Green' ? '1 orang' : '0 orang';
     document.getElementById('countYellow').textContent = status === 'Yellow' ? '1 orang' : '0 orang';
     document.getElementById('countRed').textContent = status === 'Red' ? '1 orang' : '0 orang';
-    // Panggil fungsi cek emergency
-    checkEmergencyStatus(status, '1A');
 
+    // Cek kondisi darurat
+    checkEmergencyStatus(status, '1A');
   }
 
   // Update histori text
@@ -364,6 +481,15 @@
     detailHeader.textContent = '1A';
   });
 
+  // Event tombol popup
+  document.getElementById('viewEmergencyBtn').onclick = () => {
+    detailHeader.textContent = currentEmergencyUnit;
+    hideEmergencyPopup();
+  };
+  document.getElementById('closePopupBtn').onclick = () => {
+    hideEmergencyPopup();
+  };
+
   // Simulasi koneksi WebSocket data realtime, ganti sesuai backend kamu
   // Contoh simulasi update data tiap 5 detik
   setInterval(() => {
@@ -380,11 +506,12 @@
     historyData.unshift(newData);
     if(historyData.length > 10) historyData.pop();
 
-    // Update tampilan
+    // Update tampilan unit 1A
     unit1A.querySelector('.unitInfo:nth-child(3)').textContent = `Suhu ${newData.temperature.toFixed(1)} °C`;
     unit1A.querySelector('.unitInfo:nth-child(4)').textContent = `SpO2 ${newData.spo2.toFixed(1)}`;
     unit1A.querySelector('.unitInfo:nth-child(5)').textContent = `BPM ${newData.bpm}`;
 
+    // Update warna, history, grafik, dan cek notifikasi
     updateStatusColor(newData.temperature, newData.bpm, newData.spo2);
     updateHistoryDisplay();
     updateChartData();
@@ -395,93 +522,7 @@
     }
   }, 5000);
 
-const overlay = document.getElementById('overlay');
-const emergencyPopup = document.getElementById('emergencyPopup');
-const emergencyUnitCode = document.getElementById('emergencyUnitCode');
-const viewEmergencyBtn = document.getElementById('viewEmergencyBtn');
-const closePopupBtn = document.getElementById('closePopupBtn');
-
-let emergencyStartTime = null;
-let emergencyTimeout = null;
-let currentEmergencyUnit = null;
-
-// Fungsi tampilkan popup darurat
-function showEmergencyPopup(unitCode) {
-  currentEmergencyUnit = unitCode;
-  emergencyUnitCode.textContent = unitCode;
-  overlay.style.display = 'block';
-  emergencyPopup.style.display = 'block';
-}
-
-// Fungsi sembunyikan popup darurat
-function hideEmergencyPopup() {
-  overlay.style.display = 'none';
-  emergencyPopup.style.display = 'none';
-  emergencyStartTime = null;
-  if (emergencyTimeout) {
-    clearTimeout(emergencyTimeout);
-    emergencyTimeout = null;
-  }
-  currentEmergencyUnit = null;
-}
-
-// Logika cek status merah selama 1 menit (60000 ms)
-function checkEmergencyStatus(status, unitCode) {
-  if (status === 'Red') {
-    if (!emergencyStartTime) {
-      emergencyStartTime = Date.now();
-      // Set timeout 1 menit untuk munculkan popup
-      emergencyTimeout = setTimeout(() => {
-        showEmergencyPopup(unitCode);
-      }, 10);
-    }
-  } else {
-    // Reset jika status bukan merah
-    emergencyStartTime = null;
-    if (emergencyTimeout) {
-      clearTimeout(emergencyTimeout);
-      emergencyTimeout = null;
-    }
-    hideEmergencyPopup();
-  }
-}
-
-// Saat tombol LIHAT ditekan
-viewEmergencyBtn.onclick = () => {
-  // Fokus ke device yang bermasalah di dashboard
-  detailHeader.textContent = currentEmergencyUnit;
-  hideEmergencyPopup();
-};
-
-// Saat tombol X ditekan
-closePopupBtn.onclick = () => {
-  hideEmergencyPopup();
-};
-
 </script>
-
-<!-- Overlay untuk gelapkan latar -->
-<div id="overlay" style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);z-index:9998;"></div>
-
-<!-- Popup notifikasi darurat -->
-<div id="emergencyPopup" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
-  background:#fff;border-radius:24px;padding:40px 30px;box-shadow:0 8px 30px rgba(0,0,0,0.3);
-  z-index:9999;max-width:400px;min-width:300px;text-align:center;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-  
-  <button id="closePopupBtn" style="position:absolute;top:15px;right:15px;
-    background:none;border:none;font-size:22px;cursor:pointer;font-weight:bold;">×</button>
-  
-  <h1 style="margin-bottom:12px;font-weight:900;">PASIEN DARURAT</h1>
-  
-  <div style="font-size:64px;color:#d32f2f;margin-bottom:12px;">&#9888;</div> <!-- tanda seru segitiga -->
-  
-  <div id="emergencyUnitCode" style="font-weight:900;font-size:36px;margin-bottom:12px;">A1</div>
-  
-  <div style="font-size:18px;margin-bottom:20px;">Segera Ambil Tindakan!</div>
-  
-  <button id="viewEmergencyBtn" style="background:#388e3c;color:#fff;border:none;padding:12px 24px;
-    font-weight:700;font-size:16px;border-radius:8px;cursor:pointer;">LIHAT</button>
-</div>
 
 </body>
 </html>
