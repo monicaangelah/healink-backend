@@ -9,7 +9,9 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
 // Serve static frontend files
-app.use(express.static('pwa-deploy'));
+const path = require('path');
+app.use(express.static(path.join(__dirname, 'pwa-deploy')));
+
 
 // Supabase config - ganti dengan milikmu
 const supabaseUrl = 'https://lcsfixsdqutppnmuyihf.supabase.co';
@@ -66,7 +68,7 @@ mqttClient.on('message', async (topic, message) => {
 });
 
 // Endpoint HTTP untuk fallback (tidak wajib dipakai)
-app.get('/api/data', async (req, res) => {
+('/api/data', async (req, res) => {
   const { data, error } = await supabase
     .from('sensor_data')
     .select('*')
