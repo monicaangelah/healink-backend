@@ -422,8 +422,6 @@
   <button id="viewEmergencyBtn">LIHAT</button>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <script>
   // Update jam realtime
   function updateClock() {
@@ -484,10 +482,8 @@
   // Data histori untuk 1A
   let historyData = [];
 
-  // Timer dan status tracking notifikasi darurat
-  let emergencyStartTime = null;    // waktu pertama kali status merah terdeteksi
-  let pembacaanStartTime = null;    // waktu mulai pembacaan setelah 1 menit triase
-  let merahStartTime = null;        // waktu mulai status merah setelah pembacaan valid
+  // Timer notifikasi darurat
+  let emergencyStartTime = null;
   let emergencyTimeout = null;
   let currentEmergencyUnit = null;
 
@@ -503,40 +499,25 @@
   function hideEmergencyPopup() {
     document.getElementById('overlay').style.display = 'none';
     document.getElementById('emergencyPopup').style.display = 'none';
+    emergencyStartTime = null;
+    if (emergencyTimeout) {
+      clearTimeout(emergencyTimeout);
+      emergencyTimeout = null;
+    }
     currentEmergencyUnit = null;
   }
 
-  // Logika cek status merah dengan timer pembacaan dan timer merah
+  // Logika cek status merah selama 1 menit (60000 ms)
   function checkEmergencyStatus(status, unitCode) {
     if (status === 'Red') {
       if (!emergencyStartTime) {
         emergencyStartTime = Date.now();
-        pembacaanStartTime = null;
-        merahStartTime = null;
-        clearTimeout(emergencyTimeout);
-        emergencyTimeout = null;
-      } else {
-        const elapsedSinceEmergency = Date.now() - emergencyStartTime;
-        if (elapsedSinceEmergency >= 60000) {
-          if (!pembacaanStartTime) {
-            pembacaanStartTime = Date.now();
-            merahStartTime = null;
-            clearTimeout(emergencyTimeout);
-            emergencyTimeout = null;
-          } else {
-            if (!merahStartTime) {
-              merahStartTime = Date.now();
-              emergencyTimeout = setTimeout(() => {
-                showEmergencyPopup(unitCode);
-              }, 10000);
-            }
-          }
-        }
+        emergencyTimeout = setTimeout(() => {
+          showEmergencyPopup(unitCode);
+        }, 60000);
       }
     } else {
       emergencyStartTime = null;
-      pembacaanStartTime = null;
-      merahStartTime = null;
       if (emergencyTimeout) {
         clearTimeout(emergencyTimeout);
         emergencyTimeout = null;
