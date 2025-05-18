@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#007bff" />
+    <title>IoT Sensor Dashboard</title>
+</head>
+<body>
+  <h1>Realtime Sensor Data</h1>
+  <div id="realtime"></div>
+  <h2>History</h2>
+  <ul id="history"></ul>
+
+  <script>
+    const realtimeDiv = document.getElementById('realtime');
+    const historyList = document.getElementById('history');
+
+    const ws = new WebSocket('ws://' + window.location.host);
+
+    ws.onmessage = (event) => {
+      const msg = JSON.parse(event.data);
+
+      if (msg.type === 'history') {
+        // Clear dan render ulang data history
+        historyList.innerHTML = '';
+        msg.data.forEach(item => {
+          const li = document.createElement('li');
+          li.textContent = `Temp: ${item.temperature} °C, BPM: ${item.bpm}, SpO2: ${item.spo2}, Time: ${new Date(item.created_at).toLocaleString()}`;
+          historyList.appendChild(li);
+        });
+      } else if (msg.type === 'realtime') {
+        // Update realtime div
+        realtimeDiv.textContent = `Temp: ${msg.temperature} °C, BPM: ${msg.bpm}, SpO2: ${msg.spo2}`;
+
+        // Tambah data realtime ke history list paling atas
+        const li = document.createElement('li');
+        li.textContent = `Temp: ${msg.temperature} °C, BPM: ${msg.bpm}, SpO2: ${msg.spo2}, Time: ${new Date().toLocaleString()}`;
+        historyList.insertBefore(li, historyList.firstChild);
+
+        // Batasi history maksimal 50 item
+        if (historyList.children.length > 50) {
+          historyList.removeChild(historyList.lastChild);
+        }
+      }
+    };
+
+    if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(() => console.log('Service Worker registered successfully'))
+      .catch(err => console.error('Service Worker registration failed:', err));
+    }
+  </script>
+</body>
+</html>
