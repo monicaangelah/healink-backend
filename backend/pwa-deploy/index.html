@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="css/style.css" />
     <meta name="theme-color" content="#007bff" />
     <title>IoT Sensor Dashboard</title>
-      <style>
+    <style>
       /* Modal overlay */
       #alertModal {
         display: none; /* hidden by default */
@@ -51,9 +51,20 @@
   <h2>History</h2>
   <ul id="history"></ul>
 
+  <!-- Modal popup untuk notifikasi triase -->
+  <div id="alertModal">
+    <div id="alertModalContent">
+      <p><strong>Triase Darurat!</strong></p>
+      <p>Detak jantung, suhu, dan SpO2 berada di luar batas aman selama 1 menit! Segera cek pasien.</p>
+      <button id="closeBtn">Tutup</button>
+    </div>
+  </div>
+
   <script>
     const realtimeDiv = document.getElementById('realtime');
     const historyList = document.getElementById('history');
+    const alertModal = document.getElementById('alertModal');
+    const closeBtn = document.getElementById('closeBtn');
 
     const ws = new WebSocket('wss://healink-backend-production.up.railway.app');
 
@@ -63,19 +74,14 @@
     const TEMP_HIGH_THRESHOLD = 40;
     const SPO2_THRESHOLD = 90;
 
-    // Variabel tracking kondisi triase darurat
     let triaseStartTimestamp = null;
     let triaseNotified = false;
 
-    // Fungsi cek dan request permission notifikasi
-    function requestNotificationPermission() {
-      if (Notification.permission === "default") {
-        Notification.requestPermission().then(permission => {
-          console.log("Notification permission:", permission);
-        });
-      }
-    }
-    requestNotificationPermission();
+    closeBtn.onclick = () => {
+      alertModal.style.display = 'none';
+      triaseNotified = false;
+      triaseStartTimestamp = null;
+    };
 
     ws.onmessage = (event) => {
       const msg = JSON.parse(event.data);
@@ -88,7 +94,6 @@
           historyList.appendChild(li);
         });
       } else if (msg.type === 'realtime') {
-        // Pastikan data tipe number
         const bpm = Number(msg.bpm);
         const temp = Number(msg.temperature);
         const spo2 = Number(msg.spo2);
@@ -113,49 +118,24 @@
           (spo2 < SPO2_THRESHOLD)
         );
 
-        console.log(`BPM: ${bpm}, Temp: ${temp}, SpO2: ${spo2}, isDangerous: ${isDangerous}`);
-
         if (isDangerous) {
           if (!triaseStartTimestamp) {
             triaseStartTimestamp = Date.now();
             triaseNotified = false;
           } else {
             const elapsed = Date.now() - triaseStartTimestamp;
-            console.log(`Elapsed dangerous condition: ${elapsed} ms`);
             if (elapsed >= 60000 && !triaseNotified) {
-              if (Notification.permission === "granted") {
-                new Notification("Triase Darurat!", {
-                  body: `Detak jantung, suhu, dan SpO2 berada di luar batas aman selama 1 menit! Segera cek pasien.`,
-                  icon: "https://cdn-icons-png.flaticon.com/512/1828/1828665.png"
-                });
-                triaseNotified = true;
-              } else if (Notification.permission !== "denied") {
-                Notification.requestPermission().then(permission => {
-                  if (permission === "granted") {
-                    new Notification("Triase Darurat!", {
-                      body: `Detak jantung, suhu, dan SpO2 berada di luar batas aman selama 1 menit! Segera cek pasien.`,
-                      icon: "https://cdn-icons-png.flaticon.com/512/1828/1828665.png"
-                    });
-                    triaseNotified = true;
-                  }
-                });
-              } else {
-                console.log("Notification permission denied");
-              }
+              alertModal.style.display = 'block';
+              triaseNotified = true;
             }
           }
         } else {
           triaseStartTimestamp = null;
           triaseNotified = false;
+          alertModal.style.display = 'none';
         }
       }
     };
-
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/service-worker.js')
-        .then(() => console.log('Service Worker registered successfully'))
-        .catch(err => console.error('Service Worker registration failed:', err));
-    }
   </script>
 </body>
 </html>
