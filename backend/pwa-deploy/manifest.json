@@ -1,6 +1,6 @@
 {
   "name": "host PWA",
-  "short_name": "LocalPWA",
+  "short_name": "HeaLink",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
