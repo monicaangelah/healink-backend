@@ -235,131 +235,6 @@
       border-radius: 8px;
       cursor: pointer;
     }
-
-    /* Responsif untuk layar kecil (tablet & HP) */
-    @media screen and (max-width: 768px) {
-      #app {
-        flex-direction: column;
-        max-width: 100%;
-        margin: 10px;
-        padding: 10px 15px;
-        min-height: auto;
-        border-radius: 20px;
-        box-shadow: none;
-      }
-
-      #leftPanel, #rightPanel {
-        flex: unset;
-        width: 100%;
-        padding: 10px 0;
-        border-radius: 20px;
-      }
-
-      #rightPanel {
-        padding: 16px 12px 20px;
-        margin-top: 20px;
-      }
-
-      #headerOverview {
-        padding: 15px 20px;
-        border-radius: 20px;
-        box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
-      }
-
-      #headerOverview h2 {
-        font-size: 1.4rem;
-      }
-
-      #clock {
-        font-size: 1rem;
-        top: 12px;
-        right: 12px;
-      }
-
-      #overviewStats {
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .statusBox {
-        font-size: 1rem;
-        padding: 10px 15px;
-      }
-
-      #unitGrid {
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 15px;
-      }
-
-      .unitCard {
-        padding: 18px 22px;
-        border-radius: 20px;
-      }
-
-      .unitCode {
-        font-size: 1.3rem;
-      }
-
-      .unitInfo {
-        font-size: 1rem;
-      }
-
-      #rightPanel {
-        border-radius: 20px;
-        color: white;
-      }
-
-      #detailHeader {
-        font-size: 1.6rem;
-      }
-
-      #detailHistory {
-        max-height: 100px;
-        font-size: 0.8rem;
-        padding: 6px 8px;
-      }
-
-      .chartCard {
-        padding: 6px 8px;
-      }
-
-      .chartCard h3 {
-        font-size: 1rem;
-      }
-
-      canvas {
-        height: 50px !important;
-      }
-
-      /* Popup Darurat agar sesuai layar kecil */
-      #emergencyPopup {
-        max-width: 90vw;
-        min-width: auto;
-        padding: 25px 20px;
-        border-radius: 20px;
-      }
-
-      #emergencyPopup h1 {
-        font-size: 1.5rem;
-      }
-
-      #emergencyPopup .warning-icon {
-        font-size: 48px;
-      }
-
-      #emergencyPopup #emergencyUnitCode {
-        font-size: 28px;
-      }
-
-      #emergencyPopup .message {
-        font-size: 16px;
-      }
-
-      #emergencyPopup button#viewEmergencyBtn {
-        font-size: 14px;
-        padding: 10px 18px;
-      }
-    }
   </style>
 </head>
 <body>
@@ -514,7 +389,7 @@
         emergencyStartTime = Date.now();
         emergencyTimeout = setTimeout(() => {
           showEmergencyPopup(unitCode);
-        }, 60000);
+        }, 500);
       }
     } else {
       emergencyStartTime = null;
