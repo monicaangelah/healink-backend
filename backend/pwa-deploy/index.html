@@ -17,6 +17,26 @@
 
     const ws = new WebSocket('wss://healink-backend-production.up.railway.app');
 
+    // Threshold batas aman
+    const BPM_THRESHOLD = 50;
+    const TEMP_LOW_THRESHOLD = 35;
+    const TEMP_HIGH_THRESHOLD = 40;
+    const SPO2_THRESHOLD = 90;
+
+    // Variabel tracking kondisi triase darurat
+    let triaseStartTimestamp = null;
+    let triaseNotified = false;
+
+    // Fungsi cek dan request permission notifikasi
+    function requestNotificationPermission() {
+      if (Notification.permission === "default") {
+        Notification.requestPermission().then(permission => {
+          console.log("Notification permission:", permission);
+        });
+      }
+    }
+    requestNotificationPermission();
+
     ws.onmessage = (event) => {
       const msg = JSON.parse(event.data);
 
@@ -41,13 +61,48 @@
         if (historyList.children.length > 50) {
           historyList.removeChild(historyList.lastChild);
         }
+
+        // --- Logic triase darurat ---
+        // Cek apakah kondisi berbahaya:
+        // BPM < 50, suhu < 35 atau > 40, SPO2 < 90, dan semua > 0 (valid)
+        const bpmValid = msg.bpm > 0;
+        const tempValid = msg.temperature > 0;
+        const spo2Valid = msg.spo2 > 0;
+
+        const isDangerous = bpmValid && tempValid && spo2Valid &&
+          (msg.bpm < BPM_THRESHOLD) &&
+          (msg.temperature < TEMP_LOW_THRESHOLD || msg.temperature > TEMP_HIGH_THRESHOLD) &&
+          (msg.spo2 < SPO2_THRESHOLD);
+
+        if (isDangerous) {
+          // Mulai atau lanjut hitung durasi triase
+          if (!triaseStartTimestamp) {
+            triaseStartTimestamp = Date.now();
+            triaseNotified = false;
+          } else {
+            const elapsed = Date.now() - triaseStartTimestamp;
+            if (elapsed >= 60000 && !triaseNotified) { // 1 menit
+              if (Notification.permission === "granted") {
+                new Notification("Triase Darurat!", {
+                  body: `Detak jantung, suhu, dan SpO2 berada di luar batas aman selama 1 menit! Segera cek pasien.`,
+                  icon: "https://cdn-icons-png.flaticon.com/512/1828/1828665.png"
+                });
+              }
+              triaseNotified = true;
+            }
+          }
+        } else {
+          // Reset timer jika kondisi sudah normal
+          triaseStartTimestamp = null;
+          triaseNotified = false;
+        }
       }
     };
 
     if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js')
-      .then(() => console.log('Service Worker registered successfully'))
-      .catch(err => console.error('Service Worker registration failed:', err));
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(() => console.log('Service Worker registered successfully'))
+        .catch(err => console.error('Service Worker registration failed:', err));
     }
   </script>
 </body>
