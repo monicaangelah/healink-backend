@@ -75,7 +75,6 @@
           (msg.spo2 < SPO2_THRESHOLD)
         );
 
-
         if (isDangerous) {
           // Mulai atau lanjut hitung durasi triase
           if (!triaseStartTimestamp) {
@@ -88,6 +87,14 @@
                 new Notification("Triase Darurat!", {
                   body: `Detak jantung, suhu, dan SpO2 berada di luar batas aman selama 1 menit! Segera cek pasien.`,
                   icon: "https://cdn-icons-png.flaticon.com/512/1828/1828665.png"
+                });
+              } else {
+                // Minta izin dulu
+                Notification.requestPermission().then(permission => {
+                  console.log("Permission result:", permission);
+                  if (permission === "granted") {
+                    new Notification("Tes Notifikasi", { body: "Notifikasi aktif setelah izin!" });
+                  }
                 });
               }
               triaseNotified = true;
