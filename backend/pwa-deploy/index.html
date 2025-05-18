@@ -70,8 +70,8 @@
         const spo2Valid = msg.spo2 > 0;
 
         const isDangerous = bpmValid && tempValid && spo2Valid &&
-          (msg.bpm < BPM_THRESHOLD) &&
-          (msg.temperature < TEMP_LOW_THRESHOLD || msg.temperature > TEMP_HIGH_THRESHOLD) &&
+          (msg.bpm < BPM_THRESHOLD) ||
+          (msg.temperature < TEMP_LOW_THRESHOLD || msg.temperature > TEMP_HIGH_THRESHOLD) ||
           (msg.spo2 < SPO2_THRESHOLD);
 
         if (isDangerous) {
