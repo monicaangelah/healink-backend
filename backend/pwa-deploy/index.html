@@ -41,7 +41,6 @@
       const msg = JSON.parse(event.data);
 
       if (msg.type === 'history') {
-        // Clear dan render ulang data history
         historyList.innerHTML = '';
         msg.data.forEach(item => {
           const li = document.createElement('li');
@@ -49,29 +48,32 @@
           historyList.appendChild(li);
         });
       } else if (msg.type === 'realtime') {
-        // Update realtime div
-        realtimeDiv.textContent = `Temp: ${msg.temperature} °C, BPM: ${msg.bpm}, SpO2: ${msg.spo2}`;
+        // Pastikan data tipe number
+        const bpm = Number(msg.bpm);
+        const temp = Number(msg.temperature);
+        const spo2 = Number(msg.spo2);
 
-        // Tambah data realtime ke history list paling atas
+        realtimeDiv.textContent = `Temp: ${temp} °C, BPM: ${bpm}, SpO2: ${spo2}`;
+
         const li = document.createElement('li');
-        li.textContent = `Temp: ${msg.temperature} °C, BPM: ${msg.bpm}, SpO2: ${msg.spo2}, Time: ${new Date().toLocaleString()}`;
+        li.textContent = `Temp: ${temp} °C, BPM: ${bpm}, SpO2: ${spo2}, Time: ${new Date().toLocaleString()}`;
         historyList.insertBefore(li, historyList.firstChild);
 
-        // Batasi history maksimal 50 item
         if (historyList.children.length > 50) {
           historyList.removeChild(historyList.lastChild);
         }
 
-        // --- Logic triase darurat ---
-        const bpmValid = msg.bpm > 0;
-        const tempValid = msg.temperature > 0;
-        const spo2Valid = msg.spo2 > 0;
+        const bpmValid = bpm > 0;
+        const tempValid = temp > 0;
+        const spo2Valid = spo2 > 0;
 
         const isDangerous = bpmValid && tempValid && spo2Valid && (
-          (msg.bpm < BPM_THRESHOLD) ||
-          (msg.temperature < TEMP_LOW_THRESHOLD || msg.temperature > TEMP_HIGH_THRESHOLD) ||
-          (msg.spo2 < SPO2_THRESHOLD)
+          (bpm < BPM_THRESHOLD) ||
+          (temp < TEMP_LOW_THRESHOLD || temp > TEMP_HIGH_THRESHOLD) ||
+          (spo2 < SPO2_THRESHOLD)
         );
+
+        console.log(`BPM: ${bpm}, Temp: ${temp}, SpO2: ${spo2}, isDangerous: ${isDangerous}`);
 
         if (isDangerous) {
           if (!triaseStartTimestamp) {
