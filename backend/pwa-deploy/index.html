@@ -126,6 +126,7 @@
       font-weight: 600;
     }
 
+    /* Modifikasi utama untuk grafik */
     #rightPanel {
       flex: 1.3;
       background: #2e2e2e;
@@ -135,6 +136,9 @@
       display: flex;
       flex-direction: column;
       gap: 18px;
+
+      max-width: 100%;
+      overflow-x: auto; /* Scroll horizontal jika terlalu lebar */
     }
 
     #detailHeader {
@@ -160,6 +164,7 @@
       border-radius: 16px;
       padding: 10px 12px;
       color: #000;
+      min-width: 500px; /* Minimal lebar agar grafik cukup panjang */
     }
 
     .chartCard h3 {
@@ -171,7 +176,8 @@
 
     canvas {
       max-width: 100%;
-      height: 80px !important;
+      height: 150px !important; /* Tinggi lebih besar */
+      display: block;
     }
 
     /* Popup dan overlay */
@@ -449,9 +455,10 @@
     type: 'line',
     data: { labels: [], datasets: [{ label: 'Suhu', data: [], borderColor: '#f39c12', fill: true, backgroundColor: 'rgba(243,156,18,0.2)' }] },
     options: {
+      responsive: true,
+      maintainAspectRatio: false,
       scales: { y: { min: 33, max: 42 }, x: { display: false } },
       plugins: { legend: { display: false } },
-      responsive: true,
       animation: false,
       elements: { point: { radius: 0 } }
     }
@@ -460,9 +467,10 @@
     type: 'line',
     data: { labels: [], datasets: [{ label: 'SpO2', data: [], borderColor: '#e74c3c', fill: true, backgroundColor: 'rgba(231,76,60,0.2)' }] },
     options: {
+      responsive: true,
+      maintainAspectRatio: false,
       scales: { y: { min: 80, max: 100 }, x: { display: false } },
       plugins: { legend: { display: false } },
-      responsive: true,
       animation: false,
       elements: { point: { radius: 0 } }
     }
@@ -471,9 +479,10 @@
     type: 'line',
     data: { labels: [], datasets: [{ label: 'BPM', data: [], borderColor: '#3498db', fill: true, backgroundColor: 'rgba(52,152,219,0.2)' }] },
     options: {
+      responsive: true,
+      maintainAspectRatio: false,
       scales: { y: { min: 30, max: 130 }, x: { display: false } },
       plugins: { legend: { display: false } },
-      responsive: true,
       animation: false,
       elements: { point: { radius: 0 } }
     }
@@ -507,14 +516,14 @@
     currentEmergencyUnit = null;
   }
 
-  // Logika cek status merah selama 1 menit (60000 ms)
+  // Logika cek status merah selama 10 detik (10000 ms)
   function checkEmergencyStatus(status, unitCode) {
     if (status === 'Red') {
       if (!emergencyStartTime) {
         emergencyStartTime = Date.now();
         emergencyTimeout = setTimeout(() => {
           showEmergencyPopup(unitCode);
-        }, 1000);
+        }, 10000);
       }
     } else {
       emergencyStartTime = null;
