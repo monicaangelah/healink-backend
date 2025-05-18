@@ -63,8 +63,6 @@
         }
 
         // --- Logic triase darurat ---
-        // Cek apakah kondisi berbahaya:
-        // BPM < 50, suhu < 35 atau > 40, SPO2 < 90, dan semua > 0 (valid)
         const bpmValid = msg.bpm > 0;
         const tempValid = msg.temperature > 0;
         const spo2Valid = msg.spo2 > 0;
@@ -76,32 +74,35 @@
         );
 
         if (isDangerous) {
-          // Mulai atau lanjut hitung durasi triase
           if (!triaseStartTimestamp) {
             triaseStartTimestamp = Date.now();
             triaseNotified = false;
           } else {
             const elapsed = Date.now() - triaseStartTimestamp;
-            if (elapsed >= 60000 && !triaseNotified) { // 1 menit
+            console.log(`Elapsed dangerous condition: ${elapsed} ms`);
+            if (elapsed >= 60000 && !triaseNotified) {
               if (Notification.permission === "granted") {
                 new Notification("Triase Darurat!", {
                   body: `Detak jantung, suhu, dan SpO2 berada di luar batas aman selama 1 menit! Segera cek pasien.`,
                   icon: "https://cdn-icons-png.flaticon.com/512/1828/1828665.png"
                 });
-              } else {
-                // Minta izin dulu
+                triaseNotified = true;
+              } else if (Notification.permission !== "denied") {
                 Notification.requestPermission().then(permission => {
-                  console.log("Permission result:", permission);
                   if (permission === "granted") {
-                    new Notification("Tes Notifikasi", { body: "Notifikasi aktif setelah izin!" });
+                    new Notification("Triase Darurat!", {
+                      body: `Detak jantung, suhu, dan SpO2 berada di luar batas aman selama 1 menit! Segera cek pasien.`,
+                      icon: "https://cdn-icons-png.flaticon.com/512/1828/1828665.png"
+                    });
+                    triaseNotified = true;
                   }
                 });
+              } else {
+                console.log("Notification permission denied");
               }
-              triaseNotified = true;
             }
           }
         } else {
-          // Reset timer jika kondisi sudah normal
           triaseStartTimestamp = null;
           triaseNotified = false;
         }
