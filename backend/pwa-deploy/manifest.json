@@ -1,5 +1,5 @@
 {
-  "name": "My Localhost PWA",
+  "name": "host PWA",
   "short_name": "LocalPWA",
   "start_url": "./index.html",
   "display": "standalone",
