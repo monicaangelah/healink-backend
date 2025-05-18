@@ -1,30 +1,49 @@
 <!DOCTYPE html>
 <html>
-<body>
-  <h1>Test Notification</h1>
-  <button id="btn">Request Permission & Test Notification</button>
-  <script>
-    document.getElementById('btn').onclick = () => {
-      Notification.requestPermission().then(permission => {
-        console.log("Permission:", permission);
-        if (permission === 'granted') {
-          setTimeout(() => {
-            console.log("Menampilkan notifikasi");
-            new Notification("Tes Notifikasi Delay", { body: "Ini muncul setelah 5 detik" });
-          }, 5000);
-        }
-      });
-    };
-  </script>
-</body>
-</html>
-
-<!-- <!DOCTYPE html>
-<html>
 <head>
     <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="css/style.css" />
     <meta name="theme-color" content="#007bff" />
     <title>IoT Sensor Dashboard</title>
+      <style>
+      /* Modal overlay */
+      #alertModal {
+        display: none; /* hidden by default */
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.5);
+      }
+
+      /* Modal content */
+      #alertModalContent {
+        background-color: #f44336; /* red background */
+        margin: 15% auto;
+        padding: 20px;
+        border-radius: 8px;
+        width: 80%;
+        max-width: 400px;
+        color: white;
+        font-size: 18px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      }
+
+      #closeBtn {
+        margin-top: 15px;
+        background-color: white;
+        color: #f44336;
+        border: none;
+        padding: 10px 20px;
+        font-weight: bold;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+    </style>
 </head>
 <body>
   <h1>Realtime Sensor Data</h1>
@@ -139,4 +158,4 @@
     }
   </script>
 </body>
-</html> -->
+</html>
