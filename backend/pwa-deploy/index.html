@@ -433,7 +433,7 @@ function checkEmergencyStatus(status, unitCode) {
       // Set timeout 1 menit untuk munculkan popup
       emergencyTimeout = setTimeout(() => {
         showEmergencyPopup(unitCode);
-      }, 3);
+      }, 10);
     }
   } else {
     // Reset jika status bukan merah
