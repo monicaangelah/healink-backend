@@ -15,7 +15,7 @@
     const realtimeDiv = document.getElementById('realtime');
     const historyList = document.getElementById('history');
 
-    const ws = new WebSocket('ws://' + window.location.host);
+    const ws = new WebSocket('wss://healink-backend.up.railway.app');
 
     ws.onmessage = (event) => {
       const msg = JSON.parse(event.data);
