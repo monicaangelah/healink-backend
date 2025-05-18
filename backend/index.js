@@ -9,7 +9,7 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
 // Serve static frontend files
-app.use(express.static('public'));
+app.use(express.static('pwa-deploy'));
 
 // Supabase config - ganti dengan milikmu
 const supabaseUrl = 'https://lcsfixsdqutppnmuyihf.supabase.co';
