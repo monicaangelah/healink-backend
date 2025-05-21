@@ -806,6 +806,7 @@
   }
   updateClock();
 
+  // variabel elemen dan chart (ambil dari index.html asli)
   const unit1A = document.getElementById('unit1A');
   const unit1AStatusLabel = document.getElementById('unit1AStatus');
   const detailHeader = document.getElementById('detailHeader');
@@ -815,7 +816,6 @@
   const bpmValue = document.getElementById('bpmValue');
   const totalPatientCount = document.getElementById('totalPatientCount');
 
-  // Chart setup
   const ctxTemp = document.getElementById('chartTemp').getContext('2d');
   const ctxSpo2 = document.getElementById('chartSpo2').getContext('2d');
   const ctxBpm = document.getElementById('chartBpm').getContext('2d');
@@ -916,23 +916,17 @@
       status = 'Green';
     }
 
-    // Update card background
     unit1A.style.backgroundColor = status === 'Green' ? '#D0FBFF' : status === 'Yellow' ? '#F8DEBD' : '#E3BBC6';
 
-    // Update status label
     unit1AStatusLabel.textContent = status === 'Green' ? 'Non-Urgent' : status === 'Yellow' ? 'Urgent' : 'Emergent';
     unit1AStatusLabel.className = 'patientTag';
     if (status === 'Yellow') unit1AStatusLabel.classList.add('urgent');
     if (status === 'Red') unit1AStatusLabel.classList.add('emergent');
 
-    // Update jumlah pasien di dashboard
     totalPatientCount.textContent = 'Total Patient : 1';
     document.getElementById('countGreen').textContent = status === 'Green' ? '1' : '0';
     document.getElementById('countYellow').textContent = status === 'Yellow' ? '1' : '0';
     document.getElementById('countRed').textContent = status === 'Red' ? '1' : '0';
-
-    // Cek kondisi darurat
-    checkEmergencyStatus(status, 'A1');
   }
 
   // Update histori text
@@ -947,7 +941,6 @@
     detailHistory.textContent = lines.join('\n');
   }
 
-  // Update grafik dengan data histori
   function updateChartData() {
     if(historyData.length === 0) return;
 
