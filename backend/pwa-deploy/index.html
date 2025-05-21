@@ -15,9 +15,17 @@
     /* Reset dan font */
     * {
       box-sizing: border-box;
-    }
-    body {
       margin: 0;
+      padding: 0;
+    }
+    
+    html, body {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+    
+    body {
       font-family: 'Mulish', sans-serif;
       background: rgba(253, 248, 240, 0.64);
       color: #272927;
@@ -28,30 +36,26 @@
     #app {
       display: flex;
       width: 100%;
-      max-width: 1280px;
       height: 100vh;
-      margin: 0 auto;
-      border-radius: 20px;
       background: rgba(253, 248, 240, 0.64);
-      border: 1px solid #e8e7e7;
-      box-shadow: 0 4px 90px rgba(0,0,0,0.06);
       overflow: hidden;
     }
 
     /* Sidebar kiri kecil (logo) */
     #sidebar {
-      width: 80px;
+      width: 100px;
       background: #fff;
       border-right: 1px solid #e8e7e7;
       padding: 30px 15px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      flex-shrink: 0;
     }
     
     #sidebar .logo {
-      width: 40px;
-      height: 30px;
+      width: 50px;
+      height: 40px;
       position: relative;
     }
     
@@ -66,8 +70,9 @@
       display: flex;
       flex-direction: column;
       gap: 20px;
-      padding: 20px;
+      padding: 30px;
       overflow-y: auto;
+      min-width: 0; /* Prevent flex items from overflowing */
     }
 
     /* Header dan tanggal */
@@ -80,7 +85,7 @@
     
     .header h1 {
       font-weight: 700;
-      font-size: 24px;
+      font-size: 28px;
       color: #303030;
       margin: 0;
       padding: 5px 0;
@@ -88,7 +93,7 @@
     
     .header .date {
       font-weight: 600;
-      font-size: 14px;
+      font-size: 16px;
       color: #6A6969;
       padding: 5px 0;
     }
@@ -97,7 +102,7 @@
     #overview {
       background: #fff;
       border-radius: 12px;
-      padding: 15px 20px;
+      padding: 20px 30px;
       box-shadow: 0 1px 50px rgba(0,0,0,0.08);
       border: 1px solid #e8e7e7;
       display: flex;
@@ -108,7 +113,7 @@
     
     #overview h2 {
       font-weight: 700;
-      font-size: 18px;
+      font-size: 20px;
       color: #303030;
       margin: 0;
     }
@@ -116,7 +121,7 @@
     .patientCount {
       background: #D0FBFF;
       border-radius: 8px;
-      padding: 6px 10px;
+      padding: 8px;
       font-weight: 700;
       font-size: 12px;
       color: #383838;
@@ -125,7 +130,7 @@
     /* Triage status cards */
     #triageStats {
       display: flex;
-      gap: 15px;
+      gap: 30px;
       width: 100%;
     }
     
@@ -133,24 +138,24 @@
       flex: 1;
       background: #fff;
       border-radius: 12px;
-      padding: 15px;
+      padding: 20px;
       box-shadow: 0 1px 50px rgba(0,0,0,0.08);
       border: 1px solid #e8e7e7;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 15px;
     }
     
     .triageHeader {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 16px;
     }
     
     .triageIcon {
-      width: 40px;
-      height: 40px;
-      border-radius: 8px;
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -170,7 +175,7 @@
     
     .triageTitle {
       font-weight: 600;
-      font-size: 14px;
+      font-size: 16px;
       color: #000;
     }
     
@@ -183,7 +188,7 @@
     
     .triageCount .number {
       font-weight: 400;
-      font-size: 28px;
+      font-size: 32px;
       color: #272927;
     }
     
@@ -215,12 +220,12 @@
     .patientCard {
       background: #D0FBFF;
       border-radius: 12px;
-      padding: 20px;
+      padding: 29px 30px;
       box-shadow: 0 1px 50px rgba(0,0,0,0.08);
       border: 1px solid #e8e7e7;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 24px;
       width: 100%;
     }
     
@@ -236,7 +241,7 @@
     
     .patientTitle {
       font-weight: 700;
-      font-size: 18px;
+      font-size: 20px;
       color: #000;
     }
     
@@ -252,7 +257,7 @@
     
     .patientStats {
       display: flex;
-      gap: 15px;
+      gap: 28px;
     }
     
     .statBox {
@@ -260,7 +265,7 @@
       background: #fff;
       border: 1px solid #C4C4C4;
       border-radius: 12px;
-      padding: 15px;
+      padding: 24px 32px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -269,52 +274,53 @@
     
     .statLabel {
       font-weight: 700;
-      font-size: 14px;
+      font-size: 16px;
       color: #5F5F5F;
     }
     
     .statValue {
       font-weight: 400;
-      font-size: 22px;
+      font-size: 24px;
       color: #000;
     }
 
     /* Panel detail kanan */
     #detailPanel {
-      width: 350px;
+      width: 400px;
       background: #303030;
-      padding: 20px;
+      padding: 24px 29px;
       color: #fff;
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      gap: 19px;
       overflow-y: auto;
+      flex-shrink: 0;
     }
     
     #detailHeader {
       font-weight: 400;
-      font-size: 20px;
+      font-size: 22px;
       padding: 5px 0;
     }
     
     #historyBox {
       background: #4A4949;
       border-radius: 12px;
-      padding: 15px;
+      padding: 17px 15px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
     
     #historyTitle {
       font-weight: 700;
-      font-size: 18px;
+      font-size: 20px;
     }
     
     #detailHistory {
       font-family: 'Mulish', sans-serif;
-      font-size: 14px;
-      line-height: 1.4;
+      font-size: 15px;
+      line-height: 19px;
       white-space: pre-line;
       max-height: 150px;
       overflow-y: auto;
@@ -327,7 +333,7 @@
     
     #statisticsTitle {
       font-weight: 400;
-      font-size: 20px;
+      font-size: 22px;
     }
     
     .chartCard {
@@ -338,7 +344,7 @@
       margin-bottom: 15px;
       box-shadow: 0 1px 50px rgba(0,0,0,0.08);
       border: 1px solid #e8e7e7;
-      height: 160px;
+      height: 180px;
     }
     
     .chartTitle {
@@ -349,7 +355,7 @@
     }
     
     .chartContainer {
-      height: 100px;
+      height: 120px;
       position: relative;
     }
 
@@ -420,6 +426,7 @@
       #app {
         flex-direction: column;
         height: auto;
+        overflow-y: auto;
       }
       #sidebar {
         width: 100%;
