@@ -985,10 +985,8 @@
   };
 
   // Simulasi koneksi WebSocket data realtime, ganti sesuai backend kamu
-  // Koneksi WebSocket ke backend
-  const wsProtocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  const ws = new WebSocket(wsProtocol + '://' + location.host);
-  ws = new WebSocket('wss://healink-backend-production.up.railway.app');
+  // Hanya satu instance WebSocket, pakai URL backend yang benar
+  const ws = new WebSocket('wss://healink-backend-production.up.railway.app');
 
   ws.onopen = () => {
     console.log('WebSocket connected');
@@ -1005,11 +1003,9 @@
         timestamp: new Date().toISOString(),
       };
 
-      // Tambah ke history dan batasi 10 data
       historyData.unshift(newData);
       if (historyData.length > 10) historyData.pop();
 
-      // Update UI
       tempValue.textContent = newData.temperature.toFixed(1);
       spo2Value.textContent = newData.spo2.toFixed(1);
       bpmValue.textContent = newData.bpm;
@@ -1021,9 +1017,7 @@
       if (detailHeader.textContent === 'Pilih unit') {
         detailHeader.textContent = 'A1 Patient Detail';
       }
-    }
-    else if (msg.type === 'history') {
-      // Jika dapat data history dari server
+    } else if (msg.type === 'history') {
       historyData = msg.data.map(d => ({
         temperature: d.temperature,
         bpm: d.bpm,
@@ -1051,6 +1045,7 @@
   ws.onclose = () => {
     console.log('WebSocket disconnected');
   };
+
 
 </script>
 
