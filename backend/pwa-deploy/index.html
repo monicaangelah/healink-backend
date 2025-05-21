@@ -992,36 +992,72 @@
   };
 
   // Simulasi koneksi WebSocket data realtime, ganti sesuai backend kamu
-  // Contoh simulasi update data tiap 5 detik
-  setInterval(() => {
-    const now = new Date();
-    // Simulasi data sensor random normal
-    const newData = {
-      temperature: 35 + Math.random() * 6,  // 35-41 derajat
-      bpm: 45 + Math.floor(Math.random() * 90), // 45-135 bpm
-      spo2: 80 + Math.floor(Math.random() * 20), // 80-100%
-      timestamp: now.toISOString()
-    };
+  // Koneksi WebSocket ke backend
+  const wsProtocol = location.protocol === 'https:' ? 'wss' : 'ws';
+  const ws = new WebSocket(wsProtocol + '://' + location.host);
 
-    // Push ke histori, max 10 data
-    historyData.unshift(newData);
-    if(historyData.length > 10) historyData.pop();
+  ws.onopen = () => {
+    console.log('WebSocket connected');
+  };
 
-    // Update tampilan unit 1A
-    tempValue.textContent = newData.temperature.toFixed(1);
-    spo2Value.textContent = newData.spo2.toFixed(1);
-    bpmValue.textContent = newData.bpm;
+  ws.onmessage = (event) => {
+    const msg = JSON.parse(event.data);
 
-    // Update warna, history, grafik, dan cek notifikasi
-    updateStatusColor(newData.temperature, newData.bpm, newData.spo2);
-    updateHistoryDisplay();
-    updateChartData();
+    if (msg.type === 'realtime') {
+      const newData = {
+        temperature: msg.temperature,
+        bpm: msg.bpm,
+        spo2: msg.spo2,
+        timestamp: new Date().toISOString(),
+      };
 
-    // Set detail header otomatis ke 1A kalau belum pilih
-    if(detailHeader.textContent === 'Pilih unit') {
-      detailHeader.textContent = 'A1 Patient Detail';
+      // Tambah ke history dan batasi 10 data
+      historyData.unshift(newData);
+      if (historyData.length > 10) historyData.pop();
+
+      // Update UI
+      tempValue.textContent = newData.temperature.toFixed(1);
+      spo2Value.textContent = newData.spo2.toFixed(1);
+      bpmValue.textContent = newData.bpm;
+
+      updateStatusColor(newData.temperature, newData.bpm, newData.spo2);
+      updateHistoryDisplay();
+      updateChartData();
+
+      if (detailHeader.textContent === 'Pilih unit') {
+        detailHeader.textContent = 'A1 Patient Detail';
+      }
     }
-  }, 5000);
+    else if (msg.type === 'history') {
+      // Jika dapat data history dari server
+      historyData = msg.data.map(d => ({
+        temperature: d.temperature,
+        bpm: d.bpm,
+        spo2: d.spo2,
+        timestamp: d.created_at
+      })).reverse();
+
+      if (historyData.length > 0) {
+        const latest = historyData[historyData.length - 1];
+        tempValue.textContent = latest.temperature.toFixed(1);
+        spo2Value.textContent = latest.spo2.toFixed(1);
+        bpmValue.textContent = latest.bpm;
+        updateStatusColor(latest.temperature, latest.bpm, latest.spo2);
+      }
+
+      updateHistoryDisplay();
+      updateChartData();
+    }
+  };
+
+  ws.onerror = (error) => {
+    console.error('WebSocket error:', error);
+  };
+
+  ws.onclose = () => {
+    console.log('WebSocket disconnected');
+  };
+
 </script>
 
 </body>
