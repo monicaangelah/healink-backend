@@ -12,7 +12,7 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;900&display=swap');
 
-        /* Reset dan font */
+    /* Reset dan font */
     * {
       box-sizing: border-box;
     }
@@ -40,183 +40,313 @@
 
     /* Sidebar kiri kecil (logo) */
     #sidebar {
-      width: 100px;
+      width: 101px;
       background: #fff;
       border: 1px solid #e8e7e7;
       border-radius: 12px;
       box-shadow: 0 1px 50px rgba(0,0,0,0.08);
-      padding: 50px 20px 0;
+      padding: 57px 26px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
+    
+    #sidebar .logo {
+      width: 49px;
+      height: 37px;
+      position: relative;
+    }
+    
+    #sidebar .logo svg {
+      width: 100%;
+      height: 100%;
+    }
 
-    /* Konten utama kiri */
+    /* Konten utama tengah */
     #mainContent {
-      flex: 2;
+      flex: 1;
       display: flex;
       flex-direction: column;
       gap: 30px;
-      padding: 57px 40px 40px 40px;
+      padding: 57px 0 40px 0;
+      width: 709px;
     }
 
-    /* Header dan overview */
-    #overview {
-      background: #fff;
-      border-radius: 12px;
-      padding: 20px 30px;
-      box-shadow: 0 1px 50px rgba(0,0,0,0.08);
-      position: relative;
+    /* Header dan tanggal */
+    .header {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
     }
-    #overview h2 {
+    
+    .header h1 {
       font-weight: 700;
       font-size: 28px;
       color: #303030;
-      margin-bottom: 10px;
+      margin: 0;
+      padding: 10px;
     }
-    #clock {
-      position: absolute;
-      top: 20px;
-      right: 30px;
-      font-weight: 700;
-      font-size: 20px;
-      color: #6a6969;
-    }
-    #overview ul {
-      padding-left: 20px;
-      margin: 0 0 15px 0;
-      color: #555;
+    
+    .header .date {
       font-weight: 600;
-    }
-    #overviewStats {
-      display: flex;
-      gap: 20px;
-    }
-    .statusBox {
-      flex: 1;
-      border-radius: 12px;
-      padding: 20px 25px;
-      font-weight: 700;
-      font-size: 20px;
-      text-align: center;
-      color: #000;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .statusGreen { background: #D0FBFF; }
-    .statusYellow { background: #F8DEBD; }
-    .statusRed { background: #E3BBC6; }
-    .statusBox span {
-      font-weight: 400;
       font-size: 16px;
-      color: #818181;
+      color: #6A6969;
+      padding: 10px;
     }
 
-    /* Daftar pasien (unit cards) */
-    #patients {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 30px;
-    }
-    .unitCard {
+    /* Overview box */
+    #overview {
       background: #fff;
       border-radius: 12px;
-      padding: 30px 40px;
+      padding: 26px 30px;
       box-shadow: 0 1px 50px rgba(0,0,0,0.08);
-      cursor: pointer;
-      transition: transform 0.2s ease;
-      user-select: none;
-      color: #000;
+      border: 1px solid #e8e7e7;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 699px;
     }
-    .unitCard:hover:not(.disabled) {
-      transform: translateY(-6px);
-    }
-    .unitCard.disabled {
-      cursor: default;
-      box-shadow: none;
-      color: #3b3838;
-    }
-    .unitCode {
-      font-weight: 900;
-      font-size: 28px;
-      margin-bottom: 12px;
-    }
-    .unitStatus {
+    
+    #overview h2 {
       font-weight: 700;
-      font-size: 14px;
-      padding: 6px 14px;
-      border-radius: 20px;
-      width: fit-content;
-      margin-bottom: 16px;
+      font-size: 20px;
+      color: #303030;
+      margin: 0;
     }
-    .unitStatus.Green {
+    
+    .patientCount {
       background: #D0FBFF;
-      color: #000;
+      border-radius: 8px;
+      padding: 8px;
+      font-weight: 700;
+      font-size: 12px;
+      color: #383838;
     }
-    .unitStatus.Yellow {
+
+    /* Triage status cards */
+    #triageStats {
+      display: flex;
+      gap: 30px;
+      width: 699px;
+    }
+    
+    .triageCard {
+      flex: 1;
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 1px 50px rgba(0,0,0,0.08);
+      border: 1px solid #e8e7e7;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    
+    .triageHeader {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .triageIcon {
+      width: 58px;
+      height: 58px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .triageGreen {
+      background: #D0FBFF;
+    }
+    
+    .triageYellow {
       background: #F8DEBD;
-      color: #000;
     }
-    .unitStatus.Red {
+    
+    .triageRed {
       background: #E3BBC6;
+    }
+    
+    .triageTitle {
+      font-weight: 600;
+      font-size: 16px;
       color: #000;
     }
-    .unitInfo {
-      font-size: 18px;
-      line-height: 1.4;
+    
+    .triageCount {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
     }
-    .unitInfo span {
+    
+    .triageCount .number {
+      font-weight: 400;
+      font-size: 32px;
+      color: #272927;
+    }
+    
+    .triageCount .label {
+      font-weight: 700;
+      font-size: 12px;
+      color: #818181;
+    }
+    
+    .triageTag {
+      align-self: flex-start;
+      background: #D0FBFF;
+      border-radius: 4px;
+      padding: 4px 8px;
       font-weight: 600;
+      font-size: 12px;
+      color: #000;
+    }
+    
+    .triageTag.urgent {
+      background: #F8DEBD;
+    }
+    
+    .triageTag.emergent {
+      background: #E3BBC6;
+    }
+
+    /* Patient cards */
+    .patientCard {
+      background: #D0FBFF;
+      border-radius: 12px;
+      padding: 29px 30px;
+      box-shadow: 0 1px 50px rgba(0,0,0,0.08);
+      border: 1px solid #e8e7e7;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      width: 699px;
+    }
+    
+    .patientCard.red {
+      background: #E3BBC6;
+    }
+    
+    .patientHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .patientTitle {
+      font-weight: 700;
+      font-size: 20px;
+      color: #000;
+    }
+    
+    .patientTag {
+      background: #fff;
+      border: 1px solid #C4C4C4;
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-weight: 600;
+      font-size: 12px;
+      color: #000;
+    }
+    
+    .patientStats {
+      display: flex;
+      gap: 28px;
+    }
+    
+    .statBox {
+      flex: 1;
+      background: #fff;
+      border: 1px solid #C4C4C4;
+      border-radius: 12px;
+      padding: 24px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .statLabel {
+      font-weight: 700;
+      font-size: 16px;
+      color: #5F5F5F;
+    }
+    
+    .statValue {
+      font-weight: 400;
+      font-size: 24px;
+      color: #000;
     }
 
     /* Panel detail kanan */
     #detailPanel {
-      flex: 1.3;
+      width: 560px;
       background: #303030;
       border-radius: 40px 0 0 40px;
-      padding: 24px 40px 40px 40px;
+      padding: 24px 29px;
       color: #fff;
       display: flex;
       flex-direction: column;
-      gap: 25px;
-      overflow-x: auto;
-      max-width: 100%;
+      gap: 19px;
     }
+    
     #detailHeader {
-      font-weight: 900;
-      font-size: 28px;
-      user-select: none;
+      font-weight: 400;
+      font-size: 22px;
+      padding: 10px;
     }
-    #detailHistory {
-      background: #4a4949;
+    
+    #historyBox {
+      background: #4A4949;
       border-radius: 12px;
-      padding: 20px;
-      max-height: 192px;
-      overflow-y: auto;
-      font-family: monospace;
-      font-size: 15px;
-      white-space: pre-line;
-      line-height: 1.4;
+      padding: 17px 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
+    
+    #historyTitle {
+      font-weight: 700;
+      font-size: 20px;
+    }
+    
+    #detailHistory {
+      font-family: 'Mulish', sans-serif;
+      font-size: 15px;
+      line-height: 19px;
+      white-space: pre-line;
+      max-height: 105px;
+      overflow-y: auto;
+    }
+    
+    .sectionDivider {
+      border: 1px solid #4F4E4E;
+      margin: 0;
+    }
+    
+    #statisticsTitle {
+      font-weight: 400;
+      font-size: 22px;
+    }
+    
     .chartCard {
       background: #fff;
       border-radius: 12px;
-      padding: 20px 24px;
+      padding: 3px 13px;
       color: #000;
-      min-width: 500px;
-      user-select: none;
+      height: 192px;
+      box-shadow: 0 1px 50px rgba(0,0,0,0.08);
+      border: 1px solid #e8e7e7;
     }
-    .chartCard h3 {
-      margin: 0 0 12px 0;
-      font-weight: 700;
-      font-size: 20px;
+    
+    .chartTitle {
+      font-weight: 600;
+      font-size: 16px;
       text-align: center;
-    }
-    canvas {
-      max-width: 100%;
-      height: 150px !important;
-      display: block;
+      padding: 10px;
     }
 
     /* Popup darurat */
@@ -291,7 +421,7 @@
         box-shadow: none;
         padding: 20px;
       }
-      #leftPanel, #detailPanel {
+      #sidebar, #mainContent, #detailPanel {
         width: 100%;
         padding: 15px 20px;
         border-radius: 20px;
@@ -299,88 +429,176 @@
       #detailPanel {
         margin-top: 20px;
       }
-      #overview h2 {
+      .header h1 {
         font-size: 22px;
       }
-      #clock {
+      .triageTitle {
         font-size: 16px;
-        top: 15px;
-        right: 20px;
       }
-      .statusBox {
-        font-size: 16px;
-        padding: 12px 16px;
-      }
-      .unitCode {
+      .triageCount .number {
         font-size: 22px;
       }
-      .unitInfo {
-        font-size: 16px;
+      .patientTitle {
+        font-size: 18px;
+      }
+      .statLabel {
+        font-size: 14px;
+      }
+      .statValue {
+        font-size: 20px;
       }
       #detailHeader {
-        font-size: 22px;
+        font-size: 20px;
+      }
+      #historyTitle {
+        font-size: 18px;
       }
       #detailHistory {
         font-size: 14px;
-        max-height: 120px;
+        max-height: 100px;
       }
-      .chartCard {
-        padding: 10px 15px;
-      }
-      .chartCard h3 {
-        font-size: 18px;
-      }
-      canvas {
-        height: 120px !important;
+      .chartTitle {
+        font-size: 14px;
       }
     }
-
   </style>
 </head>
 <body>
 
 <div id="app">
-  <div id="leftPanel">
-    <div id="headerOverview">
-      <h2>Dashboard HeaLink</h2>
-      <div id="clock">--:--:--</div>
-      <ul>
-        <li>Total Jumlah Pasien: <span id="totalPatients">1</span></li>
-        <li>Status Triase</li>
-      </ul>
-      <div id="overviewStats">
-        <div class="statusBox statusGreen">Hijau<br><span id="countGreen">0 orang</span></div>
-        <div class="statusBox statusYellow">Kuning<br><span id="countYellow">0 orang</span></div>
-        <div class="statusBox statusRed">Merah<br><span id="countRed">0 orang</span></div>
+  <!-- Sidebar with logo -->
+  <div id="sidebar">
+    <div class="logo">
+      <svg viewBox="0 0 49 37" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0.064 0.041H40.5V19.635H0.064V0.041Z" fill="#229AFD"/>
+        <path d="M0.064 15.525H10.6V32.56H0.064V15.525Z" fill="#229AFD"/>
+        <path d="M23.79 15.25H48.93V32.56H23.79V15.25Z" fill="#229AFD"/>
+        <path d="M1.05 16.97L26.46 34.28L23.79 32.56L1.05 16.97Z" fill="#229AFD"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Main content area -->
+  <div id="mainContent">
+    <!-- Header section -->
+    <div class="header">
+      <h1>HeaLink Dashboard</h1>
+      <div class="date" id="currentDate">Sunday, March 18th 2025</div>
+    </div>
+
+    <!-- Overview box -->
+    <div id="overview">
+      <h2>Patient Overview</h2>
+      <div class="patientCount" id="totalPatientCount">Total Patient : 1</div>
+    </div>
+
+    <!-- Triage status cards -->
+    <div id="triageStats">
+      <!-- Green triage -->
+      <div class="triageCard">
+        <div class="triageHeader">
+          <div class="triageIcon triageGreen">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18 7.2C14.4 7.2 11.52 10.08 11.52 13.68C11.52 17.28 14.4 20.16 18 20.16C21.6 20.16 24.48 17.28 24.48 13.68C24.48 10.08 21.6 7.2 18 7.2ZM18 18.24C15.48 18.24 13.44 16.2 13.44 13.68C13.44 11.16 15.48 9.12 18 9.12C20.52 9.12 22.56 11.16 22.56 13.68C22.56 16.2 20.52 18.24 18 18.24ZM18 3.6C25.2 3.6 31.2 9.6 31.2 16.8C31.2 20.4 29.76 23.76 27.36 26.16L18 35.52L8.64 26.16C6.24 23.76 4.8 20.4 4.8 16.8C4.8 9.6 10.8 3.6 18 3.6ZM18 5.52C11.76 5.52 6.72 10.56 6.72 16.8C6.72 19.92 7.92 22.8 10.08 24.96L18 32.88L25.92 24.96C28.08 22.8 29.28 19.92 29.28 16.8C29.28 10.56 24.24 5.52 18 5.52Z" fill="#478F96"/>
+            </svg>
+          </div>
+          <div class="triageTitle">Green Triage</div>
+        </div>
+        <div class="triageCount">
+          <div class="number" id="countGreen">1</div>
+          <div class="label">patients</div>
+        </div>
+        <div class="triageTag">Non-Urgent</div>
+      </div>
+
+      <!-- Yellow triage -->
+      <div class="triageCard">
+        <div class="triageHeader">
+          <div class="triageIcon triageYellow">
+            <svg width="21" height="35" viewBox="0 0 21 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8.232 8.506H17.409V16.272H8.232V8.506Z" fill="#E79B38"/>
+              <path d="M7.328 7.019H18.313V32.444H7.328V7.019Z" fill="#E79B38"/>
+              <path d="M10.5 20.93L15.141 25.571L10.5 20.93Z" fill="#E79B38" stroke="#E79B38" stroke-width="2"/>
+              <path d="M13.2 20.93L17.841 25.571L13.2 20.93Z" fill="#E79B38" stroke="#E79B38" stroke-width="2"/>
+              <path d="M11.85 20.93L16.491 25.571L11.85 20.93Z" fill="#E79B38" stroke="#E79B38" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="triageTitle">Yellow Triage</div>
+        </div>
+        <div class="triageCount">
+          <div class="number" id="countYellow">0</div>
+          <div class="label">patients</div>
+        </div>
+        <div class="triageTag urgent">Urgent</div>
+      </div>
+
+      <!-- Red triage -->
+      <div class="triageCard">
+        <div class="triageHeader">
+          <div class="triageIcon triageRed">
+            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 5C9.48 5 5 9.48 5 15C5 20.52 9.48 25 15 25C20.52 25 25 20.52 25 15C25 9.48 20.52 5 15 5ZM16 22H14V20H16V22ZM16 18H14V8H16V18Z" fill="#CA6B6E"/>
+            </svg>
+          </div>
+          <div class="triageTitle">Red Triage</div>
+        </div>
+        <div class="triageCount">
+          <div class="number" id="countRed">0</div>
+          <div class="label">patients</div>
+        </div>
+        <div class="triageTag emergent">Emergent</div>
       </div>
     </div>
 
-    <div id="unitGrid">
-      <!-- Hanya satu kotak -->
-      <div class="unitCard disabled" id="unit1A">
-        <div class="unitCode">1A</div>
-        <div class="unitStatus" id="unit1AStatus">Tidak Ada</div>
-        <div class="unitInfo"><span>Suhu</span> - °C</div>
-        <div class="unitInfo"><span>SpO2</span> -</div>
-        <div class="unitInfo"><span>BPM</span> -</div>
+    <!-- Patient card -->
+    <div class="patientCard" id="unit1A">
+      <div class="patientHeader">
+        <div class="patientTitle">A1 Patient</div>
+        <div class="patientTag" id="unit1AStatus">Non-Urgent</div>
+      </div>
+      <div class="patientStats">
+        <div class="statBox">
+          <div class="statLabel">Temperature (°C)</div>
+          <div class="statValue" id="tempValue">-</div>
+        </div>
+        <div class="statBox">
+          <div class="statLabel">Saturation (%)</div>
+          <div class="statValue" id="spo2Value">-</div>
+        </div>
+        <div class="statBox">
+          <div class="statLabel">Heart Rate (BPM)</div>
+          <div class="statValue" id="bpmValue">-</div>
+        </div>
       </div>
     </div>
   </div>
 
-  <div id="rightPanel">
-    <div id="detailHeader">Pilih unit</div>
-    <div id="detailHistory">Tidak ada data</div>
-
+  <!-- Detail panel -->
+  <div id="detailPanel">
+    <div id="detailHeader">A1 Patient Detail</div>
+    
+    <!-- History section -->
+    <div id="historyBox">
+      <div id="historyTitle">History</div>
+      <div id="detailHistory">Tidak ada data</div>
+    </div>
+    
+    <div class="sectionDivider"></div>
+    <div id="statisticsTitle">Statistics</div>
+    
+    <!-- Chart cards -->
     <div class="chartCard">
-      <h3>Suhu Tubuh</h3>
+      <div class="chartTitle">Temperature</div>
       <canvas id="chartTemp"></canvas>
     </div>
+    
     <div class="chartCard">
-      <h3>Saturasi Oksigen</h3>
+      <div class="chartTitle">Saturation</div>
       <canvas id="chartSpo2"></canvas>
     </div>
+    
     <div class="chartCard">
-      <h3>Detak Jantung/menit</h3>
+      <div class="chartTitle">Heart Rate</div>
       <canvas id="chartBpm"></canvas>
     </div>
   </div>
@@ -400,20 +618,33 @@
 <script>
   // Update jam realtime
   function updateClock() {
-    const clockEl = document.getElementById('clock');
+    const clockEl = document.getElementById('currentDate');
     const now = new Date();
-    const h = now.getHours().toString().padStart(2,'0');
-    const m = now.getMinutes().toString().padStart(2,'0');
-    const s = now.getSeconds().toString().padStart(2,'0');
-    clockEl.textContent = `${h}:${m}:${s}`;
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    
+    const day = days[now.getDay()];
+    const month = months[now.getMonth()];
+    const date = now.getDate();
+    const year = now.getFullYear();
+    
+    let suffix = 'th';
+    if (date === 1 || date === 21 || date === 31) suffix = 'st';
+    else if (date === 2 || date === 22) suffix = 'nd';
+    else if (date === 3 || date === 23) suffix = 'rd';
+    
+    clockEl.textContent = `${day}, ${month} ${date}${suffix} ${year}`;
   }
-  setInterval(updateClock, 1000);
   updateClock();
 
   const unit1A = document.getElementById('unit1A');
   const unit1AStatusLabel = document.getElementById('unit1AStatus');
   const detailHeader = document.getElementById('detailHeader');
   const detailHistory = document.getElementById('detailHistory');
+  const tempValue = document.getElementById('tempValue');
+  const spo2Value = document.getElementById('spo2Value');
+  const bpmValue = document.getElementById('bpmValue');
+  const totalPatientCount = document.getElementById('totalPatientCount');
 
   // Chart setup
   const ctxTemp = document.getElementById('chartTemp').getContext('2d');
@@ -516,21 +747,23 @@
       status = 'Green';
     }
 
-    unit1A.classList.remove('Green', 'Yellow', 'Red');
-    unit1A.classList.add(status);
-    unit1A.style.backgroundColor = status === 'Green' ? '#b8f1cd' : status === 'Yellow' ? '#f8f0ad' : '#f9c3b0';
+    // Update card background
+    unit1A.style.backgroundColor = status === 'Green' ? '#D0FBFF' : status === 'Yellow' ? '#F8DEBD' : '#E3BBC6';
 
-    unit1AStatusLabel.textContent = status;
-    unit1AStatusLabel.className = 'unitStatus ' + status;
+    // Update status label
+    unit1AStatusLabel.textContent = status === 'Green' ? 'Non-Urgent' : status === 'Yellow' ? 'Urgent' : 'Emergent';
+    unit1AStatusLabel.className = 'patientTag';
+    if (status === 'Yellow') unit1AStatusLabel.classList.add('urgent');
+    if (status === 'Red') unit1AStatusLabel.classList.add('emergent');
 
     // Update jumlah pasien di dashboard
-    document.getElementById('totalPatients').textContent = 1;
-    document.getElementById('countGreen').textContent = status === 'Green' ? '1 orang' : '0 orang';
-    document.getElementById('countYellow').textContent = status === 'Yellow' ? '1 orang' : '0 orang';
-    document.getElementById('countRed').textContent = status === 'Red' ? '1 orang' : '0 orang';
+    totalPatientCount.textContent = 'Total Patient : 1';
+    document.getElementById('countGreen').textContent = status === 'Green' ? '1' : '0';
+    document.getElementById('countYellow').textContent = status === 'Yellow' ? '1' : '0';
+    document.getElementById('countRed').textContent = status === 'Red' ? '1' : '0';
 
     // Cek kondisi darurat
-    checkEmergencyStatus(status, '1A');
+    checkEmergencyStatus(status, 'A1');
   }
 
   // Update histori text
@@ -540,7 +773,7 @@
       return;
     }
     const lines = historyData.map(h => {
-      return `Suhu : ${h.temperature.toFixed(1)} °C, BPM : ${h.bpm}, SpO2 : ${h.spo2}, Time : ${new Date(h.timestamp).toLocaleString()}`;
+      return `Temp : ${h.temperature.toFixed(1)} °C, BPM : ${h.bpm}, SpO2 : ${h.spo2}, Time : ${new Date(h.timestamp).toLocaleString()}`;
     });
     detailHistory.textContent = lines.join('\n');
   }
@@ -581,12 +814,12 @@
 
   // Saat klik kotak 1A, aktifkan dan update detail
   unit1A.addEventListener('click', () => {
-    detailHeader.textContent = '1A';
+    detailHeader.textContent = 'A1 Patient Detail';
   });
 
   // Event tombol popup
   document.getElementById('viewEmergencyBtn').onclick = () => {
-    detailHeader.textContent = currentEmergencyUnit;
+    detailHeader.textContent = 'A1 Patient Detail';
     hideEmergencyPopup();
   };
   document.getElementById('closePopupBtn').onclick = () => {
@@ -610,9 +843,9 @@
     if(historyData.length > 10) historyData.pop();
 
     // Update tampilan unit 1A
-    unit1A.querySelector('.unitInfo:nth-child(3)').textContent = `Suhu ${newData.temperature.toFixed(1)} °C`;
-    unit1A.querySelector('.unitInfo:nth-child(4)').textContent = `SpO2 ${newData.spo2.toFixed(1)}`;
-    unit1A.querySelector('.unitInfo:nth-child(5)').textContent = `BPM ${newData.bpm}`;
+    tempValue.textContent = newData.temperature.toFixed(1);
+    spo2Value.textContent = newData.spo2.toFixed(1);
+    bpmValue.textContent = newData.bpm;
 
     // Update warna, history, grafik, dan cek notifikasi
     updateStatusColor(newData.temperature, newData.bpm, newData.spo2);
@@ -621,10 +854,9 @@
 
     // Set detail header otomatis ke 1A kalau belum pilih
     if(detailHeader.textContent === 'Pilih unit') {
-      detailHeader.textContent = '1A';
+      detailHeader.textContent = 'A1 Patient Detail';
     }
   }, 5000);
-
 </script>
 
 </body>
