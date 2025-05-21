@@ -10,362 +10,277 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;900&display=swap');
+
     body {
-      margin: 0; padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #FFFCF8;
-      color: #222;
+      margin: 0;
+      font-family: 'Mulish', sans-serif;
+      background: rgba(253, 248, 240, 0.64);
+      color: #272927;
+      user-select: none;
     }
-    * {
-      box-sizing: border-box;
-    }
+
     #app {
-      max-width: 1440px;
+      width: 1440px;
+      height: 1024px;
       margin: 20px auto;
-      padding: 20px 30px;
-      background: #FFFCF8;
-      border-radius: 40px;
+      padding: 0;
+      background: rgba(253, 248, 240, 0.64);
+      border: 1px solid #E8E7E7;
       box-shadow: 0 4px 90px rgba(0,0,0,0.06);
+      border-radius: 40px;
       display: flex;
-      gap: 20px;
-      min-height: 80vh;
+      gap: 35px;
+      overflow: hidden;
     }
+
     #leftPanel {
       flex: 2;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 30px;
+      padding: 57px 40px 0 40px;
     }
+
     #headerOverview {
-      background: white;
-      padding: 20px;
-      border-radius: 16px;
-      box-shadow: 0 3px 10px rgb(0 0 0 / 0.05);
+      background: #FFFFFF;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 1px 50px rgba(0, 0, 0, 0.08);
       position: relative;
     }
+
     #headerOverview h2 {
       margin: 0 0 8px 0;
       font-weight: 700;
-      font-size: 1.8rem;
+      font-size: 28px;
+      color: #303030;
     }
+
     #clock {
       position: absolute;
       top: 20px;
-      right: 20px;
+      right: 30px;
       font-weight: 700;
-      font-size: 1.2rem;
-      color: #444;
+      font-size: 20px;
+      color: #6A6969;
       user-select: none;
     }
+
     #overviewStats {
       display: flex;
-      gap: 15px;
-      margin-top: 10px;
+      gap: 20px;
+      margin-top: 12px;
     }
+
     .statusBox {
       flex: 1;
       border-radius: 12px;
-      padding: 12px 20px;
+      padding: 14px 24px;
       font-weight: 700;
-      font-size: 1.2rem;
-      color: #000;
+      font-size: 20px;
+      color: #000000;
       text-align: center;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
     }
-    .statusGreen { background: #b8f1cd; }
-    .statusYellow { background: #f8f0ad; }
-    .statusRed { background: #f9c3b0; }
+
+    .statusGreen {
+      background: #D0FBFF;
+    }
+
+    .statusYellow {
+      background: #F8DEBD;
+    }
+
+    .statusRed {
+      background: #E3BBC6;
+    }
+
+    .statusBox span {
+      font-weight: 400;
+      font-size: 16px;
+      color: #818181;
+    }
 
     #unitGrid {
       display: grid;
-      grid-template-columns: 180px;
-      gap: 20px;
+      grid-template-columns: 1fr;
+      gap: 30px;
     }
 
     .unitCard {
-      background: white;
-      border-radius: 16px;
-      padding: 24px 28px;
-      box-shadow: 0 3px 10px rgb(0 0 0 / 0.05);
+      background: #FFFFFF;
+      border-radius: 12px;
+      padding: 30px 40px;
+      box-shadow: 0 1px 50px rgba(0, 0, 0, 0.08);
       cursor: pointer;
-      position: relative;
       transition: transform 0.2s ease;
       user-select: none;
     }
-    .unitCard:hover {
-      transform: translateY(-5px);
+
+    .unitCard:hover:not(.disabled) {
+      transform: translateY(-6px);
     }
+
     .unitCard.disabled {
-      background: #fff;
-      color: #3b3838;
       cursor: default;
       box-shadow: none;
+      color: #3b3838;
     }
-    .unitStatus {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 4px 8px;
-      border-radius: 10px;
-      color: #222;
-    }
-    .unitStatus.Green { background: #b8f1cd; }
-    .unitStatus.Yellow { background: #f8f0ad; }
-    .unitStatus.Red { background: #f9c3b0; }
+
     .unitCode {
       font-weight: 900;
-      font-size: 1.6rem;
+      font-size: 28px;
       margin-bottom: 12px;
+      color: #000;
     }
+
+    .unitStatus {
+      font-weight: 700;
+      font-size: 14px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      width: fit-content;
+      margin-bottom: 16px;
+      user-select: none;
+    }
+
+    .unitStatus.Green {
+      background: #D0FBFF;
+      color: #000;
+    }
+
+    .unitStatus.Yellow {
+      background: #F8DEBD;
+      color: #000;
+    }
+
+    .unitStatus.Red {
+      background: #E3BBC6;
+      color: #000;
+    }
+
     .unitInfo {
-      font-size: 1.1rem;
+      font-size: 18px;
       line-height: 1.4;
+      user-select: none;
     }
+
     .unitInfo span {
       font-weight: 600;
     }
 
-    /* Modifikasi utama untuk grafik */
     #rightPanel {
       flex: 1.3;
-      background: #2e2e2e;
-      border-radius: 40px;
-      padding: 24px 20px 30px;
-      color: white;
+      background: #303030;
+      border-radius: 40px 0 0 40px;
+      padding: 24px 40px 40px 40px;
+      color: #FFFFFF;
       display: flex;
       flex-direction: column;
-      gap: 18px;
-
+      gap: 25px;
       max-width: 100%;
-      overflow-x: auto; /* Scroll horizontal jika terlalu lebar */
+      overflow-x: auto;
     }
 
     #detailHeader {
       font-weight: 900;
-      font-size: 2.2rem;
+      font-size: 28px;
       user-select: none;
     }
 
     #detailHistory {
-      background: #4a4a4a;
-      border-radius: 16px;
-      padding: 8px 10px;
-      max-height: 120px;
+      background: #4A4949;
+      border-radius: 12px;
+      padding: 20px;
+      max-height: 192px;
       overflow-y: auto;
       font-family: monospace;
-      font-size: 0.85rem;
+      font-size: 15px;
       white-space: pre-line;
       line-height: 1.4;
     }
 
     .chartCard {
-      background: #fff;
-      border-radius: 16px;
-      padding: 10px 12px;
-      color: #000;
-      min-width: 500px; /* Minimal lebar agar grafik cukup panjang */
+      background: #FFFFFF;
+      border-radius: 12px;
+      padding: 20px 24px;
+      color: #000000;
+      min-width: 500px;
+      user-select: none;
     }
 
     .chartCard h3 {
-      margin: 0 0 8px 0;
+      margin: 0 0 12px 0;
       font-weight: 700;
+      font-size: 20px;
       text-align: center;
-      font-size: 1.1rem;
     }
 
     canvas {
       max-width: 100%;
-      height: 150px !important; /* Tinggi lebih besar */
+      height: 150px !important;
       display: block;
     }
 
-    /* Popup dan overlay */
-    #overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.5);
-      z-index: 9998;
-    }
-    #emergencyPopup {
-      display: none;
-      position: fixed;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background: #fff;
-      border-radius: 24px;
-      padding: 40px 30px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-      z-index: 9999;
-      max-width: 400px;
-      min-width: 300px;
-      text-align: center;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    #emergencyPopup button#closePopupBtn {
-      position: absolute;
-      top: 15px; right: 15px;
-      background: none;
-      border: none;
-      font-size: 22px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    #emergencyPopup h1 {
-      margin-bottom: 12px;
-      font-weight: 900;
-    }
-    #emergencyPopup .warning-icon {
-      font-size: 64px;
-      color: #d32f2f;
-      margin-bottom: 12px;
-    }
-    #emergencyPopup #emergencyUnitCode {
-      font-weight: 900;
-      font-size: 36px;
-      margin-bottom: 12px;
-    }
-    #emergencyPopup .message {
-      font-size: 18px;
-      margin-bottom: 20px;
-    }
-    #emergencyPopup button#viewEmergencyBtn {
-      background: #388e3c;
-      color: #fff;
-      border: none;
-      padding: 12px 24px;
-      font-weight: 700;
-      font-size: 16px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    /* Responsif untuk layar kecil (tablet & HP) */
+    /* Responsive - sesuaikan kalau perlu */
     @media screen and (max-width: 768px) {
       #app {
+        width: 100%;
+        height: auto;
         flex-direction: column;
-        max-width: 100%;
-        margin: 10px;
-        padding: 10px 15px;
-        min-height: auto;
         border-radius: 20px;
         box-shadow: none;
+        padding: 20px;
       }
-
       #leftPanel, #rightPanel {
-        flex: unset;
         width: 100%;
-        padding: 10px 0;
-        border-radius: 20px;
-      }
-
-      #rightPanel {
-        padding: 16px 12px 20px;
-        margin-top: 20px;
-      }
-
-      #headerOverview {
         padding: 15px 20px;
         border-radius: 20px;
-        box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
       }
-
-      #headerOverview h2 {
-        font-size: 1.4rem;
-      }
-
-      #clock {
-        font-size: 1rem;
-        top: 12px;
-        right: 12px;
-      }
-
-      #overviewStats {
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .statusBox {
-        font-size: 1rem;
-        padding: 10px 15px;
-      }
-
-      #unitGrid {
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 15px;
-      }
-
-      .unitCard {
-        padding: 18px 22px;
-        border-radius: 20px;
-      }
-
-      .unitCode {
-        font-size: 1.3rem;
-      }
-
-      .unitInfo {
-        font-size: 1rem;
-      }
-
       #rightPanel {
-        border-radius: 20px;
-        color: white;
+        margin-top: 20px;
       }
-
-      #detailHeader {
-        font-size: 1.6rem;
+      #headerOverview h2 {
+        font-size: 22px;
       }
-
-      #detailHistory {
-        max-height: 100px;
-        font-size: 0.8rem;
-        padding: 6px 8px;
+      #clock {
+        font-size: 16px;
+        top: 15px;
+        right: 20px;
       }
-
-      .chartCard {
-        padding: 6px 8px;
+      .statusBox {
+        font-size: 16px;
+        padding: 12px 16px;
       }
-
-      .chartCard h3 {
-        font-size: 1rem;
+      .unitCode {
+        font-size: 22px;
       }
-
-      canvas {
-        height: 50px !important;
-      }
-
-      /* Popup Darurat agar sesuai layar kecil */
-      #emergencyPopup {
-        max-width: 90vw;
-        min-width: auto;
-        padding: 25px 20px;
-        border-radius: 20px;
-      }
-
-      #emergencyPopup h1 {
-        font-size: 1.5rem;
-      }
-
-      #emergencyPopup .warning-icon {
-        font-size: 48px;
-      }
-
-      #emergencyPopup #emergencyUnitCode {
-        font-size: 28px;
-      }
-
-      #emergencyPopup .message {
+      .unitInfo {
         font-size: 16px;
       }
-
-      #emergencyPopup button#viewEmergencyBtn {
+      #detailHeader {
+        font-size: 22px;
+      }
+      #detailHistory {
         font-size: 14px;
-        padding: 10px 18px;
+        max-height: 120px;
+      }
+      .chartCard {
+        padding: 10px 15px;
+      }
+      .chartCard h3 {
+        font-size: 18px;
+      }
+      canvas {
+        height: 120px !important;
       }
     }
+
   </style>
 </head>
 <body>
