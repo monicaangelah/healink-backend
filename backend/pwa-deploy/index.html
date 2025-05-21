@@ -11,6 +11,7 @@
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
 
     /* Reset dan font */
     * {
@@ -368,57 +369,177 @@
       background: rgba(0,0,0,0.5);
       z-index: 9998;
     }
+    
     #emergencyPopup {
       display: none;
       position: fixed;
-      top: 50%; left: 50%;
+      top: 50%; 
+      left: 50%;
       transform: translate(-50%, -50%);
-      background: #fff;
-      border-radius: 24px;
-      padding: 40px 30px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+      width: 602px;
+      height: 257px;
+      background: #FFFFFF;
+      box-shadow: 0px 15px 28px rgba(171, 178, 187, 0.25);
+      border-radius: 48px;
+      padding: 48px 128px 48px 48px;
       z-index: 9999;
-      max-width: 400px;
-      min-width: 300px;
-      text-align: center;
-      font-family: 'Mulish', sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 16px;
+      isolation: isolate;
+      font-family: 'Syne', sans-serif;
     }
-    #emergencyPopup button#closePopupBtn {
+    
+    #emergencyUnitCode {
+      width: 426px;
+      height: 86px;
+      font-weight: 720;
+      font-size: 72px;
+      line-height: 86px;
+      color: #2A2F3F;
+      margin: 0;
+    }
+    
+    .alert-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 0px;
+      gap: 8px;
+      width: 242px;
+      height: 59px;
+    }
+    
+    .alert-icon {
+      width: 48px;
+      height: 48px;
+      position: relative;
+    }
+    
+    .alert-icon svg {
       position: absolute;
-      top: 15px; right: 15px;
-      background: none;
-      border: none;
-      font-size: 22px;
-      cursor: pointer;
-      font-weight: bold;
+      left: 19.94%;
+      right: 17.39%;
+      top: 3.96%;
+      bottom: 4.63%;
+      fill: #F14D42;
+      transform: rotate(0.29deg);
     }
-    #emergencyPopup h1 {
-      margin-bottom: 12px;
-      font-weight: 900;
+    
+    .alert-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 0px;
+      gap: 2px;
+      width: 186px;
+      height: 59px;
     }
-    #emergencyPopup .warning-icon {
-      font-size: 64px;
-      color: #d32f2f;
-      margin-bottom: 12px;
+    
+    .alert-title {
+      width: 86px;
+      height: 38px;
+      font-weight: 600;
+      font-size: 32px;
+      line-height: 38px;
+      color: #2A2F3F;
+      margin: 0;
     }
-    #emergencyPopup #emergencyUnitCode {
-      font-weight: 900;
-      font-size: 36px;
-      margin-bottom: 12px;
-    }
-    #emergencyPopup .message {
-      font-size: 18px;
-      margin-bottom: 20px;
-    }
-    #emergencyPopup button#viewEmergencyBtn {
-      background: #388e3c;
-      color: #fff;
-      border: none;
-      padding: 12px 24px;
-      font-weight: 700;
+    
+    .alert-message {
+      width: 186px;
+      height: 19px;
+      font-weight: 400;
       font-size: 16px;
-      border-radius: 8px;
+      line-height: 19px;
+      color: #2A2F3F;
+      margin: 0;
+    }
+    
+    #closePopupBtn {
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      padding: 12px;
+      gap: 4px;
+      position: absolute;
+      width: 39.56px;
+      height: 39.56px;
+      right: 33px;
+      top: 33px;
+      border: 1px solid rgba(0, 0, 0, 0.5);
+      border-radius: 13px;
+      background: transparent;
       cursor: pointer;
+    }
+    
+    #closePopupBtn .close-icon {
+      width: 15.56px;
+      height: 15.56px;
+      position: relative;
+    }
+    
+    #closePopupBtn .close-icon::before,
+    #closePopupBtn .close-icon::after {
+      content: '';
+      position: absolute;
+      width: 2px;
+      height: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 26px;
+    }
+    
+    #closePopupBtn .close-icon::before {
+      transform: rotate(-45deg);
+      left: 7px;
+      top: -2px;
+    }
+    
+    #closePopupBtn .close-icon::after {
+      transform: rotate(45deg);
+      left: 7px;
+      top: -2px;
+    }
+    
+    .blood-drop {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 228.09px;
+      height: 238.11px;
+      overflow: hidden;
+      z-index: -1;
+    }
+    
+    .blood-drop .large-drop {
+      position: absolute;
+      width: 147px;
+      height: 187.74px;
+      right: 50px;
+      bottom: -30px;
+      background: #F14D42;
+      border-radius: 50% 50% 0 50%;
+      transform: rotate(-34.99deg);
+    }
+    
+    .blood-drop .small-drop {
+      position: absolute;
+      width: 30.08px;
+      height: 43.88px;
+      right: 150px;
+      top: 30px;
+      background: #F14D42;
+      border-radius: 50% 50% 0 50%;
+      transform: rotate(-27.62deg);
+    }
+    
+    #viewEmergencyBtn {
+      display: none; /* Hide the view button as it's not in the new design */
     }
 
     /* Responsive */
@@ -437,6 +558,21 @@
       #detailPanel {
         width: 100%;
       }
+      #emergencyPopup {
+        width: 90%;
+        height: auto;
+        padding: 30px 80px 30px 30px;
+      }
+      #emergencyUnitCode {
+        font-size: 48px;
+        line-height: 58px;
+        height: auto;
+        width: auto;
+      }
+      .blood-drop {
+        width: 150px;
+        height: 150px;
+      }
     }
 
     @media screen and (max-width: 768px) {
@@ -445,6 +581,16 @@
       }
       .patientStats {
         flex-direction: column;
+      }
+      #emergencyPopup {
+        padding: 20px;
+      }
+      #closePopupBtn {
+        right: 20px;
+        top: 20px;
+      }
+      .blood-drop {
+        display: none;
       }
     }
   </style>
@@ -599,12 +745,25 @@
 <!-- Overlay dan Popup Darurat -->
 <div id="overlay"></div>
 <div id="emergencyPopup">
-  <button id="closePopupBtn">×</button>
-  <h1>PASIEN DARURAT</h1>
-  <div class="warning-icon">&#9888;</div>
-  <div id="emergencyUnitCode">A1</div>
-  <div class="message">Segera Ambil Tindakan!</div>
-  <button id="viewEmergencyBtn">LIHAT</button>
+  <h1 id="emergencyUnitCode">A1 Patient</h1>
+  <div class="alert-container">
+    <div class="alert-icon">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M24 4C12.95 4 4 12.95 4 24C4 35.05 12.95 44 24 44C35.05 44 44 35.05 44 24C44 12.95 35.05 4 24 4ZM26 34H22V30H26V34ZM26 26H22V14H26V26Z" fill="#F14D42"/>
+      </svg>
+    </div>
+    <div class="alert-content">
+      <h2 class="alert-title">Alert!</h2>
+      <p class="alert-message">Needs action immediately</p>
+    </div>
+  </div>
+  <button id="closePopupBtn">
+    <span class="close-icon"></span>
+  </button>
+  <div class="blood-drop">
+    <div class="large-drop"></div>
+    <div class="small-drop"></div>
+  </div>
 </div>
 
 <script>
@@ -691,9 +850,9 @@
   // Fungsi tampilkan popup darurat
   function showEmergencyPopup(unitCode) {
     currentEmergencyUnit = unitCode;
-    document.getElementById('emergencyUnitCode').textContent = unitCode;
+    document.getElementById('emergencyUnitCode').textContent = unitCode + ' Patient';
     document.getElementById('overlay').style.display = 'block';
-    document.getElementById('emergencyPopup').style.display = 'block';
+    document.getElementById('emergencyPopup').style.display = 'flex';
   }
 
   // Fungsi sembunyikan popup darurat
@@ -810,10 +969,6 @@
   });
 
   // Event tombol popup
-  document.getElementById('viewEmergencyBtn').onclick = () => {
-    detailHeader.textContent = 'A1 Patient Detail';
-    hideEmergencyPopup();
-  };
   document.getElementById('closePopupBtn').onclick = () => {
     hideEmergencyPopup();
   };
