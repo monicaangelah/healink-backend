@@ -12,6 +12,10 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;900&display=swap');
 
+        /* Reset dan font */
+    * {
+      box-sizing: border-box;
+    }
     body {
       margin: 0;
       font-family: 'Mulish', sans-serif;
@@ -20,125 +24,124 @@
       user-select: none;
     }
 
+    /* Container utama */
     #app {
+      display: flex;
       width: 1440px;
       height: 1024px;
       margin: 20px auto;
-      padding: 0;
-      background: rgba(253, 248, 240, 0.64);
-      border: 1px solid #E8E7E7;
-      box-shadow: 0 4px 90px rgba(0,0,0,0.06);
       border-radius: 40px;
-      display: flex;
-      gap: 35px;
+      background: rgba(253, 248, 240, 0.64);
+      border: 1px solid #e8e7e7;
+      box-shadow: 0 4px 90px rgba(0,0,0,0.06);
       overflow: hidden;
+      gap: 35px;
     }
 
-    #leftPanel {
+    /* Sidebar kiri kecil (logo) */
+    #sidebar {
+      width: 100px;
+      background: #fff;
+      border: 1px solid #e8e7e7;
+      border-radius: 12px;
+      box-shadow: 0 1px 50px rgba(0,0,0,0.08);
+      padding: 50px 20px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Konten utama kiri */
+    #mainContent {
       flex: 2;
       display: flex;
       flex-direction: column;
       gap: 30px;
-      padding: 57px 40px 0 40px;
+      padding: 57px 40px 40px 40px;
     }
 
-    #headerOverview {
-      background: #FFFFFF;
-      padding: 20px 30px;
+    /* Header dan overview */
+    #overview {
+      background: #fff;
       border-radius: 12px;
-      box-shadow: 0 1px 50px rgba(0, 0, 0, 0.08);
+      padding: 20px 30px;
+      box-shadow: 0 1px 50px rgba(0,0,0,0.08);
       position: relative;
     }
-
-    #headerOverview h2 {
-      margin: 0 0 8px 0;
+    #overview h2 {
       font-weight: 700;
       font-size: 28px;
       color: #303030;
+      margin-bottom: 10px;
     }
-
     #clock {
       position: absolute;
       top: 20px;
       right: 30px;
       font-weight: 700;
       font-size: 20px;
-      color: #6A6969;
-      user-select: none;
+      color: #6a6969;
     }
-
+    #overview ul {
+      padding-left: 20px;
+      margin: 0 0 15px 0;
+      color: #555;
+      font-weight: 600;
+    }
     #overviewStats {
       display: flex;
       gap: 20px;
-      margin-top: 12px;
     }
-
     .statusBox {
       flex: 1;
       border-radius: 12px;
-      padding: 14px 24px;
+      padding: 20px 25px;
       font-weight: 700;
       font-size: 20px;
-      color: #000000;
       text-align: center;
-      user-select: none;
+      color: #000;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      gap: 4px;
+      gap: 6px;
     }
-
-    .statusGreen {
-      background: #D0FBFF;
-    }
-
-    .statusYellow {
-      background: #F8DEBD;
-    }
-
-    .statusRed {
-      background: #E3BBC6;
-    }
-
+    .statusGreen { background: #D0FBFF; }
+    .statusYellow { background: #F8DEBD; }
+    .statusRed { background: #E3BBC6; }
     .statusBox span {
       font-weight: 400;
       font-size: 16px;
       color: #818181;
     }
 
-    #unitGrid {
+    /* Daftar pasien (unit cards) */
+    #patients {
       display: grid;
       grid-template-columns: 1fr;
       gap: 30px;
     }
-
     .unitCard {
-      background: #FFFFFF;
+      background: #fff;
       border-radius: 12px;
       padding: 30px 40px;
-      box-shadow: 0 1px 50px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 1px 50px rgba(0,0,0,0.08);
       cursor: pointer;
       transition: transform 0.2s ease;
       user-select: none;
+      color: #000;
     }
-
     .unitCard:hover:not(.disabled) {
       transform: translateY(-6px);
     }
-
     .unitCard.disabled {
       cursor: default;
       box-shadow: none;
       color: #3b3838;
     }
-
     .unitCode {
       font-weight: 900;
       font-size: 28px;
       margin-bottom: 12px;
-      color: #000;
     }
-
     .unitStatus {
       font-weight: 700;
       font-size: 14px;
@@ -146,55 +149,47 @@
       border-radius: 20px;
       width: fit-content;
       margin-bottom: 16px;
-      user-select: none;
     }
-
     .unitStatus.Green {
       background: #D0FBFF;
       color: #000;
     }
-
     .unitStatus.Yellow {
       background: #F8DEBD;
       color: #000;
     }
-
     .unitStatus.Red {
       background: #E3BBC6;
       color: #000;
     }
-
     .unitInfo {
       font-size: 18px;
       line-height: 1.4;
-      user-select: none;
     }
-
     .unitInfo span {
       font-weight: 600;
     }
 
-    #rightPanel {
+    /* Panel detail kanan */
+    #detailPanel {
       flex: 1.3;
       background: #303030;
       border-radius: 40px 0 0 40px;
       padding: 24px 40px 40px 40px;
-      color: #FFFFFF;
+      color: #fff;
       display: flex;
       flex-direction: column;
       gap: 25px;
-      max-width: 100%;
       overflow-x: auto;
+      max-width: 100%;
     }
-
     #detailHeader {
       font-weight: 900;
       font-size: 28px;
       user-select: none;
     }
-
     #detailHistory {
-      background: #4A4949;
+      background: #4a4949;
       border-radius: 12px;
       padding: 20px;
       max-height: 192px;
@@ -204,30 +199,89 @@
       white-space: pre-line;
       line-height: 1.4;
     }
-
     .chartCard {
-      background: #FFFFFF;
+      background: #fff;
       border-radius: 12px;
       padding: 20px 24px;
-      color: #000000;
+      color: #000;
       min-width: 500px;
       user-select: none;
     }
-
     .chartCard h3 {
       margin: 0 0 12px 0;
       font-weight: 700;
       font-size: 20px;
       text-align: center;
     }
-
     canvas {
       max-width: 100%;
       height: 150px !important;
       display: block;
     }
 
-    /* Responsive - sesuaikan kalau perlu */
+    /* Popup darurat */
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.5);
+      z-index: 9998;
+    }
+    #emergencyPopup {
+      display: none;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      border-radius: 24px;
+      padding: 40px 30px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+      z-index: 9999;
+      max-width: 400px;
+      min-width: 300px;
+      text-align: center;
+      font-family: 'Mulish', sans-serif;
+    }
+    #emergencyPopup button#closePopupBtn {
+      position: absolute;
+      top: 15px; right: 15px;
+      background: none;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    #emergencyPopup h1 {
+      margin-bottom: 12px;
+      font-weight: 900;
+    }
+    #emergencyPopup .warning-icon {
+      font-size: 64px;
+      color: #d32f2f;
+      margin-bottom: 12px;
+    }
+    #emergencyPopup #emergencyUnitCode {
+      font-weight: 900;
+      font-size: 36px;
+      margin-bottom: 12px;
+    }
+    #emergencyPopup .message {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+    #emergencyPopup button#viewEmergencyBtn {
+      background: #388e3c;
+      color: #fff;
+      border: none;
+      padding: 12px 24px;
+      font-weight: 700;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    /* Responsive */
     @media screen and (max-width: 768px) {
       #app {
         width: 100%;
@@ -237,15 +291,15 @@
         box-shadow: none;
         padding: 20px;
       }
-      #leftPanel, #rightPanel {
+      #leftPanel, #detailPanel {
         width: 100%;
         padding: 15px 20px;
         border-radius: 20px;
       }
-      #rightPanel {
+      #detailPanel {
         margin-top: 20px;
       }
-      #headerOverview h2 {
+      #overview h2 {
         font-size: 22px;
       }
       #clock {
