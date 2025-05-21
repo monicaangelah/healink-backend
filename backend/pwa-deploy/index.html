@@ -928,6 +928,8 @@
     document.getElementById('countGreen').textContent = status === 'Green' ? '1' : '0';
     document.getElementById('countYellow').textContent = status === 'Yellow' ? '1' : '0';
     document.getElementById('countRed').textContent = status === 'Red' ? '1' : '0';
+
+    checkEmergencyStatus(status, 'A1');
   }
 
   // Update histori text
