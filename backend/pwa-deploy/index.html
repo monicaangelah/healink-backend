@@ -911,7 +911,7 @@
   function updateStatusColor(suhu, bpm, spo2) {
     let status = 'Green';
 
-    if ((bpm < 50) || (spo2 < 85) || (suhu < 35) || (suhu > 40)) {
+    if ((bpm < 30) || (spo2 < 85) || (suhu < 35) || (suhu > 40)) {
       status = 'Red';
     } else if ((bpm >= 30 && bpm <= 55) || (suhu === 34 || suhu === 38 || suhu === 39) || (spo2 > 85 && spo2 < 88)) {
       status = 'Yellow';
