@@ -988,6 +988,7 @@
   // Koneksi WebSocket ke backend
   const wsProtocol = location.protocol === 'https:' ? 'wss' : 'ws';
   const ws = new WebSocket(wsProtocol + '://' + location.host);
+  ws = new WebSocket('wss://healink-backend-production.up.railway.app');
 
   ws.onopen = () => {
     console.log('WebSocket connected');
