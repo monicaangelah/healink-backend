@@ -27,33 +27,31 @@
     /* Container utama */
     #app {
       display: flex;
-      width: 1440px;
-      height: 1024px;
-      margin: 20px auto;
-      border-radius: 40px;
+      width: 100%;
+      max-width: 1280px;
+      height: 100vh;
+      margin: 0 auto;
+      border-radius: 20px;
       background: rgba(253, 248, 240, 0.64);
       border: 1px solid #e8e7e7;
       box-shadow: 0 4px 90px rgba(0,0,0,0.06);
       overflow: hidden;
-      gap: 35px;
     }
 
     /* Sidebar kiri kecil (logo) */
     #sidebar {
-      width: 101px;
+      width: 80px;
       background: #fff;
-      border: 1px solid #e8e7e7;
-      border-radius: 12px;
-      box-shadow: 0 1px 50px rgba(0,0,0,0.08);
-      padding: 57px 26px;
+      border-right: 1px solid #e8e7e7;
+      padding: 30px 15px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
     
     #sidebar .logo {
-      width: 49px;
-      height: 37px;
+      width: 40px;
+      height: 30px;
       position: relative;
     }
     
@@ -67,9 +65,9 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 30px;
-      padding: 57px 0 40px 0;
-      width: 709px;
+      gap: 20px;
+      padding: 20px;
+      overflow-y: auto;
     }
 
     /* Header dan tanggal */
@@ -82,35 +80,35 @@
     
     .header h1 {
       font-weight: 700;
-      font-size: 28px;
+      font-size: 24px;
       color: #303030;
       margin: 0;
-      padding: 10px;
+      padding: 5px 0;
     }
     
     .header .date {
       font-weight: 600;
-      font-size: 16px;
+      font-size: 14px;
       color: #6A6969;
-      padding: 10px;
+      padding: 5px 0;
     }
 
     /* Overview box */
     #overview {
       background: #fff;
       border-radius: 12px;
-      padding: 26px 30px;
+      padding: 15px 20px;
       box-shadow: 0 1px 50px rgba(0,0,0,0.08);
       border: 1px solid #e8e7e7;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      width: 699px;
+      width: 100%;
     }
     
     #overview h2 {
       font-weight: 700;
-      font-size: 20px;
+      font-size: 18px;
       color: #303030;
       margin: 0;
     }
@@ -118,7 +116,7 @@
     .patientCount {
       background: #D0FBFF;
       border-radius: 8px;
-      padding: 8px;
+      padding: 6px 10px;
       font-weight: 700;
       font-size: 12px;
       color: #383838;
@@ -127,32 +125,32 @@
     /* Triage status cards */
     #triageStats {
       display: flex;
-      gap: 30px;
-      width: 699px;
+      gap: 15px;
+      width: 100%;
     }
     
     .triageCard {
       flex: 1;
       background: #fff;
       border-radius: 12px;
-      padding: 20px;
+      padding: 15px;
       box-shadow: 0 1px 50px rgba(0,0,0,0.08);
       border: 1px solid #e8e7e7;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 10px;
     }
     
     .triageHeader {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 10px;
     }
     
     .triageIcon {
-      width: 58px;
-      height: 58px;
-      border-radius: 12px;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -172,7 +170,7 @@
     
     .triageTitle {
       font-weight: 600;
-      font-size: 16px;
+      font-size: 14px;
       color: #000;
     }
     
@@ -185,7 +183,7 @@
     
     .triageCount .number {
       font-weight: 400;
-      font-size: 32px;
+      font-size: 28px;
       color: #272927;
     }
     
@@ -217,13 +215,13 @@
     .patientCard {
       background: #D0FBFF;
       border-radius: 12px;
-      padding: 29px 30px;
+      padding: 20px;
       box-shadow: 0 1px 50px rgba(0,0,0,0.08);
       border: 1px solid #e8e7e7;
       display: flex;
       flex-direction: column;
-      gap: 24px;
-      width: 699px;
+      gap: 20px;
+      width: 100%;
     }
     
     .patientCard.red {
@@ -238,7 +236,7 @@
     
     .patientTitle {
       font-weight: 700;
-      font-size: 20px;
+      font-size: 18px;
       color: #000;
     }
     
@@ -254,7 +252,7 @@
     
     .patientStats {
       display: flex;
-      gap: 28px;
+      gap: 15px;
     }
     
     .statBox {
@@ -262,7 +260,7 @@
       background: #fff;
       border: 1px solid #C4C4C4;
       border-radius: 12px;
-      padding: 24px 32px;
+      padding: 15px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -271,54 +269,54 @@
     
     .statLabel {
       font-weight: 700;
-      font-size: 16px;
+      font-size: 14px;
       color: #5F5F5F;
     }
     
     .statValue {
       font-weight: 400;
-      font-size: 24px;
+      font-size: 22px;
       color: #000;
     }
 
     /* Panel detail kanan */
     #detailPanel {
-      width: 560px;
+      width: 350px;
       background: #303030;
-      border-radius: 40px 0 0 40px;
-      padding: 24px 29px;
+      padding: 20px;
       color: #fff;
       display: flex;
       flex-direction: column;
-      gap: 19px;
+      gap: 15px;
+      overflow-y: auto;
     }
     
     #detailHeader {
       font-weight: 400;
-      font-size: 22px;
-      padding: 10px;
+      font-size: 20px;
+      padding: 5px 0;
     }
     
     #historyBox {
       background: #4A4949;
       border-radius: 12px;
-      padding: 17px 15px;
+      padding: 15px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
     
     #historyTitle {
       font-weight: 700;
-      font-size: 20px;
+      font-size: 18px;
     }
     
     #detailHistory {
       font-family: 'Mulish', sans-serif;
-      font-size: 15px;
-      line-height: 19px;
+      font-size: 14px;
+      line-height: 1.4;
       white-space: pre-line;
-      max-height: 105px;
+      max-height: 150px;
       overflow-y: auto;
     }
     
@@ -329,24 +327,30 @@
     
     #statisticsTitle {
       font-weight: 400;
-      font-size: 22px;
+      font-size: 20px;
     }
     
     .chartCard {
       background: #fff;
       border-radius: 12px;
-      padding: 3px 13px;
+      padding: 15px;
       color: #000;
-      height: 192px;
+      margin-bottom: 15px;
       box-shadow: 0 1px 50px rgba(0,0,0,0.08);
       border: 1px solid #e8e7e7;
+      height: 160px;
     }
     
     .chartTitle {
       font-weight: 600;
       font-size: 16px;
       text-align: center;
-      padding: 10px;
+      margin-bottom: 10px;
+    }
+    
+    .chartContainer {
+      height: 100px;
+      position: relative;
     }
 
     /* Popup darurat */
@@ -412,53 +416,28 @@
     }
 
     /* Responsive */
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 1024px) {
       #app {
-        width: 100%;
-        height: auto;
         flex-direction: column;
-        border-radius: 20px;
-        box-shadow: none;
-        padding: 20px;
+        height: auto;
       }
-      #sidebar, #mainContent, #detailPanel {
+      #sidebar {
         width: 100%;
-        padding: 15px 20px;
-        border-radius: 20px;
+        height: 60px;
+        flex-direction: row;
+        padding: 10px;
       }
       #detailPanel {
-        margin-top: 20px;
+        width: 100%;
       }
-      .header h1 {
-        font-size: 22px;
+    }
+
+    @media screen and (max-width: 768px) {
+      #triageStats {
+        flex-direction: column;
       }
-      .triageTitle {
-        font-size: 16px;
-      }
-      .triageCount .number {
-        font-size: 22px;
-      }
-      .patientTitle {
-        font-size: 18px;
-      }
-      .statLabel {
-        font-size: 14px;
-      }
-      .statValue {
-        font-size: 20px;
-      }
-      #detailHeader {
-        font-size: 20px;
-      }
-      #historyTitle {
-        font-size: 18px;
-      }
-      #detailHistory {
-        font-size: 14px;
-        max-height: 100px;
-      }
-      .chartTitle {
-        font-size: 14px;
+      .patientStats {
+        flex-direction: column;
       }
     }
   </style>
@@ -498,7 +477,7 @@
       <div class="triageCard">
         <div class="triageHeader">
           <div class="triageIcon triageGreen">
-            <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="24" height="24" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M18 7.2C14.4 7.2 11.52 10.08 11.52 13.68C11.52 17.28 14.4 20.16 18 20.16C21.6 20.16 24.48 17.28 24.48 13.68C24.48 10.08 21.6 7.2 18 7.2ZM18 18.24C15.48 18.24 13.44 16.2 13.44 13.68C13.44 11.16 15.48 9.12 18 9.12C20.52 9.12 22.56 11.16 22.56 13.68C22.56 16.2 20.52 18.24 18 18.24ZM18 3.6C25.2 3.6 31.2 9.6 31.2 16.8C31.2 20.4 29.76 23.76 27.36 26.16L18 35.52L8.64 26.16C6.24 23.76 4.8 20.4 4.8 16.8C4.8 9.6 10.8 3.6 18 3.6ZM18 5.52C11.76 5.52 6.72 10.56 6.72 16.8C6.72 19.92 7.92 22.8 10.08 24.96L18 32.88L25.92 24.96C28.08 22.8 29.28 19.92 29.28 16.8C29.28 10.56 24.24 5.52 18 5.52Z" fill="#478F96"/>
             </svg>
           </div>
@@ -515,7 +494,7 @@
       <div class="triageCard">
         <div class="triageHeader">
           <div class="triageIcon triageYellow">
-            <svg width="21" height="35" viewBox="0 0 21 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="20" height="20" viewBox="0 0 21 35" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M8.232 8.506H17.409V16.272H8.232V8.506Z" fill="#E79B38"/>
               <path d="M7.328 7.019H18.313V32.444H7.328V7.019Z" fill="#E79B38"/>
               <path d="M10.5 20.93L15.141 25.571L10.5 20.93Z" fill="#E79B38" stroke="#E79B38" stroke-width="2"/>
@@ -536,7 +515,7 @@
       <div class="triageCard">
         <div class="triageHeader">
           <div class="triageIcon triageRed">
-            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="20" height="20" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M15 5C9.48 5 5 9.48 5 15C5 20.52 9.48 25 15 25C20.52 25 25 20.52 25 15C25 9.48 20.52 5 15 5ZM16 22H14V20H16V22ZM16 18H14V8H16V18Z" fill="#CA6B6E"/>
             </svg>
           </div>
@@ -589,17 +568,23 @@
     <!-- Chart cards -->
     <div class="chartCard">
       <div class="chartTitle">Temperature</div>
-      <canvas id="chartTemp"></canvas>
+      <div class="chartContainer">
+        <canvas id="chartTemp"></canvas>
+      </div>
     </div>
     
     <div class="chartCard">
       <div class="chartTitle">Saturation</div>
-      <canvas id="chartSpo2"></canvas>
+      <div class="chartContainer">
+        <canvas id="chartSpo2"></canvas>
+      </div>
     </div>
     
     <div class="chartCard">
       <div class="chartTitle">Heart Rate</div>
-      <canvas id="chartBpm"></canvas>
+      <div class="chartContainer">
+        <canvas id="chartBpm"></canvas>
+      </div>
     </div>
   </div>
 </div>
