@@ -1,4 +1,3 @@
-<!-- DONE TINGGAL PERBAIKIN INI -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -34,7 +33,7 @@
       overflow-x: hidden;
     }
 
-    /* Container utama */
+    /* Main container */
     #app {
       display: flex;
       width: 100%;
@@ -42,7 +41,7 @@
       background: rgba(253, 248, 240, 0.64);
     }
 
-    /* Sidebar kiri kecil (logo) */
+    /* Left sidebar (logo) */
     #sidebar {
       width: 100px;
       background: #fff;
@@ -71,7 +70,7 @@
       height: 100%;
     }
 
-    /* Konten utama tengah */
+    /* Center main content */
     #mainContent {
       flex: 1;
       display: flex;
@@ -79,10 +78,10 @@
       gap: 20px;
       padding: 30px;
       overflow-y: auto;
-      min-width: 0; /* Prevent flex items from overflowing */
+      min-width: 0; 
     }
 
-    /* Header dan tanggal */
+    /* Header and date */
     .header {
       display: flex;
       flex-direction: column;
@@ -817,7 +816,7 @@
 </div>
 
 <script>
-  // Update jam realtime
+  // Update current time in real-time
   function updateClock() {
     const clockEl = document.getElementById('currentDate');
     const now = new Date();
@@ -838,7 +837,7 @@
   }
   updateClock();
 
-  // variabel elemen dan chart (ambil dari index.html asli)
+  // DOM elements and chart variables
   const unit1A = document.getElementById('unit1A');
   const unit1AStatusLabel = document.getElementById('unit1AStatus');
   const detailHeader = document.getElementById('detailHeader');
@@ -889,15 +888,15 @@
     }
   });
 
-  // Data histori untuk 1A
+  // History data for unit 1A
   let historyData = [];
 
-  // Timer notifikasi darurat
+  // Emergency notification timer
   let emergencyStartTime = null;
   let emergencyTimeout = null;
   let currentEmergencyUnit = null;
 
-  // Fungsi tampilkan popup darurat
+  // Function to show emergency popup
   function showEmergencyPopup(unitCode) {
     currentEmergencyUnit = unitCode;
     document.querySelector('.popup-title').textContent = unitCode + ' Patient';
@@ -905,7 +904,7 @@
     document.getElementById('emergencyPopup').style.display = 'block';
   }
 
-  // Fungsi sembunyikan popup darurat
+  // Function to hide emergency popup
   function hideEmergencyPopup() {
     document.getElementById('overlay').style.display = 'none';
     document.getElementById('emergencyPopup').style.display = 'none';
@@ -917,7 +916,7 @@
     currentEmergencyUnit = null;
   }
 
-  // Logika cek status merah selama 10 detik (10000 ms)
+  // Logic to check 'Red' status for 10 seconds (10000 ms)
   function checkEmergencyStatus(status, unitCode) {
     if (status === 'Red') {
       if (!emergencyStartTime) {
@@ -936,7 +935,7 @@
     }
   }
 
-  // Fungsi update warna status kotak 1A berdasar sensor
+  // Function to update status color of unit 1A based on sensor values
   function updateStatusColor(suhu, bpm, spo2) {
     let status = 'Green';
 
@@ -963,7 +962,7 @@
     checkEmergencyStatus(status, 'A1');
   }
 
-  // Update histori text
+  // Update history display text
   function updateHistoryDisplay() {
     if(historyData.length === 0) {
       detailHistory.textContent = "Tidak ada data";
@@ -975,6 +974,7 @@
     detailHistory.textContent = lines.join('\n');
   }
 
+  // Update chart data from history
   function updateChartData() {
     if(historyData.length === 0) return;
 
@@ -993,7 +993,7 @@
     chartBpm.update();
   }
 
-  // Bersihkan data grafik
+  // Clear chart data
   function clearChartData() {
     chartTemp.data.labels = [];
     chartSpo2.data.labels = [];
@@ -1008,18 +1008,17 @@
     chartBpm.update();
   }
 
-  // Saat klik kotak 1A, aktifkan dan update detail
+  // On unit 1A box click, update detail view
   unit1A.addEventListener('click', () => {
     detailHeader.textContent = 'A1 Patient Detail';
   });
 
-  // Event tombol popup
+  // Popup button event
   document.getElementById('closePopupBtn').onclick = () => {
     hideEmergencyPopup();
   };
 
-  // Simulasi koneksi WebSocket data realtime, ganti sesuai backend kamu
-  // Hanya satu instance WebSocket, pakai URL backend yang benar
+  // Simulate real-time WebSocket connection, change based on your backend
   const ws = new WebSocket('wss://healink-backend-production.up.railway.app');
 
   ws.onopen = () => {

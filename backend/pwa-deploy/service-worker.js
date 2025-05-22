@@ -4,17 +4,17 @@ const urlsToCache = [
   './index.html',
   './manifest.json',
   './icons/icon.png',
-  // tambahkan file lain yang perlu di-cache, misal CSS, JS, gambar
+  // add other files that need to be cached, such as CSS, JS, images
 ];
 
-// Saat install service worker, cache file
+// On service worker install, cache the specified files
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
   );
 });
 
-// Saat fetch, coba ambil dari cache dulu
+// On fetch request, try to serve from cache first
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request).then(response => {
