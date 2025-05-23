@@ -1,4 +1,4 @@
-<h1 align="center">Tugas Besar - II3240 Rekayasa Sistem dan Teknologi Informasi (Healink)</h1>
+<h1 align="center">Tugas Besar - II3240 Rekayasa Sistem dan Teknologi Informasi (HeaLink)</h1>
 
 ## Table of Contents
 * [General Information](#general-information)
