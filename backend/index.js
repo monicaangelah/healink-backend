@@ -19,7 +19,7 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Connect to MQTT broker
-const mqttClient = mqtt.connect('mqtt://reksti.profybandung.cloud:1883');
+const mqttClient = mqtt.connect('mqtt://mqtt.eclipseprojects.io:1883');
 
 mqttClient.on('connect', () => {
   console.log('Connected to MQTT broker');
