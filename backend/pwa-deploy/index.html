@@ -963,16 +963,28 @@
   }
 
   // Update history display text
+  //function updateHistoryDisplay() {
+    //if(historyData.length === 0) {
+      //detailHistory.textContent = "Tidak ada data";
+      //return;
+    //}
+    //const lines = historyData.map(h => {
+      //return `Temp : ${h.temperature.toFixed(1)} °C, BPM : ${h.bpm}, SpO2 : ${h.spo2}, Time : ${new Date(h.timestamp).toLocaleString()}`;
+    //});
+    //detailHistory.textContent = lines.join('\n');
+  //}
   function updateHistoryDisplay() {
-    if(historyData.length === 0) {
-      detailHistory.textContent = "Tidak ada data";
+    if (historyData.length === 0) {
+      detailHistory.innerHTML = "<i>Tidak ada data</i>";
       return;
     }
-    const lines = historyData.map(h => {
-      return `Temp : ${h.temperature.toFixed(1)} °C, BPM : ${h.bpm}, SpO2 : ${h.spo2}, Time : ${new Date(h.timestamp).toLocaleString()}`;
-    });
-    detailHistory.textContent = lines.join('\n');
+
+    // Gunakan innerHTML agar browser memaksa render ulang
+    detailHistory.innerHTML = historyData.map(h => {
+      return `<div>Temp : ${h.temperature.toFixed(1)} °C, BPM : ${h.bpm}, SpO2 : ${h.spo2}, Time : ${new Date(h.timestamp).toLocaleString()}</div>`;
+    }).join('');
   }
+
 
   // Update chart data from history
   function updateChartData() {
