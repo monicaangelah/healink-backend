@@ -26,17 +26,23 @@ mqttClient.on('connect', () => {
   mqttClient.subscribe('/datasensor');
 });
 
-// When a new WebSocket client connects, send historical data
+// Handle new WebSocket connections
 wss.on('connection', async (ws) => {
-  console.log('New WebSocket client connected');
+  console.log('🟢 WebSocket client connected');
+  console.log('Current clients:', wss.clients.size);
 
+  ws.on('close', () => {
+    console.log('🔴 WebSocket client disconnected');
+  });
+
+  // Send recent history on connection
   const { data, error } = await supabase
     .from('sensor_data')
     .select('*')
     .order('created_at', { ascending: false })
     .limit(50);
 
-  if (!error) {
+  if (!error && ws.readyState === WebSocket.OPEN) {
     ws.send(JSON.stringify({ type: 'history', data }));
   }
 });
@@ -47,7 +53,7 @@ mqttClient.on('message', async (topic, message) => {
     const data = JSON.parse(message.toString());
     console.log('Data received:', data);
 
-    // Store data to Supabase
+    // Save to Supabase
     const { error } = await supabase.from('sensor_data').insert([
       {
         temperature: data.temperature,
@@ -58,35 +64,18 @@ mqttClient.on('message', async (topic, message) => {
     ]);
     if (error) console.error('Supabase insert error:', error);
 
-    // Send real-time data to all connected WebSocket clients
-    // wss.clients.forEach(client => {
-      // if (client.readyState === WebSocket.OPEN) {
-        // client.send(JSON.stringify({ type: 'realtime', ...data }));
-      // }
-    //});
-
+    // Send to all connected WebSocket clients
     console.log('Sending to clients:', wss.clients.size);
     wss.clients.forEach(client => {
-      console.log('Client readyState:', client.readyState);
       if (client.readyState === WebSocket.OPEN) {
-        console.log('Sending realtime to client');
         client.send(JSON.stringify({ type: 'realtime', ...data }));
       }
-    });
-
-    wss.on('connection', (ws) => {
-      console.log('🟢 WebSocket client connected');
-      console.log('Current clients:', wss.clients.size);
-
-      ws.on('close', () => {
-        console.log('🔴 WebSocket client disconnected');
-      });
     });
   }
 });
 
 // Optional HTTP endpoint as fallback (not required)
-('/api/data', async (req, res) => {
+app.get('/api/data', async (req, res) => {
   const { data, error } = await supabase
     .from('sensor_data')
     .select('*')
@@ -95,11 +84,6 @@ mqttClient.on('message', async (topic, message) => {
   if (error) return res.status(500).json({ error: error.message });
   res.json(data);
 });
-
-// Start backend server
-// server.listen(3000, () => {
-//   console.log('Backend running at http://localhost:3000');
-// });
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
