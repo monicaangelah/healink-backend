@@ -59,11 +59,11 @@ mqttClient.on('message', async (topic, message) => {
     if (error) console.error('Supabase insert error:', error);
 
     // Send real-time data to all connected WebSocket clients
-    wss.clients.forEach(client => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify({ type: 'realtime', ...data }));
-      }
-    });
+    // wss.clients.forEach(client => {
+      // if (client.readyState === WebSocket.OPEN) {
+        // client.send(JSON.stringify({ type: 'realtime', ...data }));
+      // }
+    //});
 
     console.log('Sending to clients:', wss.clients.size);
     wss.clients.forEach(client => {
@@ -72,6 +72,15 @@ mqttClient.on('message', async (topic, message) => {
         console.log('Sending realtime to client');
         client.send(JSON.stringify({ type: 'realtime', ...data }));
       }
+    });
+
+    wss.on('connection', (ws) => {
+      console.log('🟢 WebSocket client connected');
+      console.log('Current clients:', wss.clients.size);
+
+      ws.on('close', () => {
+        console.log('🔴 WebSocket client disconnected');
+      });
     });
   }
 });
