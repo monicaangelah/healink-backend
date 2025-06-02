@@ -974,16 +974,26 @@
     //detailHistory.textContent = lines.join('\n');
   //}
   function updateHistoryDisplay() {
+  const container = document.getElementById('detailHistory');
+
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+
     if (historyData.length === 0) {
-      detailHistory.innerHTML = "<i>Tidak ada data</i>";
+      const node = document.createElement('div');
+      node.textContent = 'Tidak ada data';
+      container.appendChild(node);
       return;
     }
 
-    // Gunakan innerHTML agar browser memaksa render ulang
-    detailHistory.innerHTML = historyData.map(h => {
-      return `<div>Temp : ${h.temperature.toFixed(1)} °C, BPM : ${h.bpm}, SpO2 : ${h.spo2}, Time : ${new Date(h.timestamp).toLocaleString()}</div>`;
-    }).join('');
+    historyData.forEach(h => {
+      const node = document.createElement('div');
+      node.textContent = `Temp : ${h.temperature.toFixed(1)} °C, BPM : ${h.bpm}, SpO2 : ${h.spo2}, Time : ${new Date(h.timestamp).toLocaleString()}`;
+      container.appendChild(node);
+    });
   }
+
 
 
   // Update chart data from history
