@@ -327,13 +327,13 @@
       font-family: 'Mulish', sans-serif;
       font-size: 15px;
       line-height: 19px;
-      white-space: pre-line;
       max-height: 150px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
+
     
     .sectionDivider {
       border: 1px solid #4F4E4E;
@@ -966,16 +966,6 @@
   }
 
   // Update history display text
-  //function updateHistoryDisplay() {
-    //if(historyData.length === 0) {
-      //detailHistory.textContent = "Tidak ada data";
-      //return;
-    //}
-    //const lines = historyData.map(h => {
-      //return `Temp : ${h.temperature.toFixed(1)} °C, BPM : ${h.bpm}, SpO2 : ${h.spo2}, Time : ${new Date(h.timestamp).toLocaleString()}`;
-    //});
-    //detailHistory.textContent = lines.join('\n');
-  //}
   function updateHistoryDisplay() {
     const container = document.getElementById('detailHistory');
 
@@ -998,6 +988,7 @@
     // Paksa scroll agar terlihat efeknya
     container.scrollTop = 0;
   }
+
 
 
 
