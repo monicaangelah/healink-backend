@@ -330,6 +330,9 @@
       white-space: pre-line;
       max-height: 150px;
       overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
     
     .sectionDivider {
@@ -974,25 +977,28 @@
     //detailHistory.textContent = lines.join('\n');
   //}
   function updateHistoryDisplay() {
-  const container = document.getElementById('detailHistory');
-
-    while (container.firstChild) {
-      container.removeChild(container.firstChild);
-    }
+    const container = document.getElementById('detailHistory');
 
     if (historyData.length === 0) {
-      const node = document.createElement('div');
-      node.textContent = 'Tidak ada data';
-      container.appendChild(node);
+      container.innerHTML = '<i>Tidak ada data</i>';
       return;
     }
 
-    historyData.forEach(h => {
-      const node = document.createElement('div');
-      node.textContent = `Temp : ${h.temperature.toFixed(1)} °C, BPM : ${h.bpm}, SpO2 : ${h.spo2}, Time : ${new Date(h.timestamp).toLocaleString()}`;
-      container.appendChild(node);
-    });
+    const html = historyData.map(h =>
+      `<div style="padding: 2px 0; border-bottom: 1px solid #666;">
+        <span>Temp: ${h.temperature.toFixed(1)}°C</span>,
+        <span>BPM: ${h.bpm}</span>,
+        <span>SpO2: ${h.spo2}</span>,
+        <span>Time: ${new Date(h.timestamp).toLocaleString()}</span>
+      </div>`
+    ).join('');
+
+    container.innerHTML = html;
+
+    // Paksa scroll agar terlihat efeknya
+    container.scrollTop = 0;
   }
+
 
 
 
