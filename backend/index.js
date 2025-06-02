@@ -64,6 +64,15 @@ mqttClient.on('message', async (topic, message) => {
         client.send(JSON.stringify({ type: 'realtime', ...data }));
       }
     });
+
+    console.log('Sending to clients:', wss.clients.size);
+    wss.clients.forEach(client => {
+      console.log('Client readyState:', client.readyState);
+      if (client.readyState === WebSocket.OPEN) {
+        console.log('Sending realtime to client');
+        client.send(JSON.stringify({ type: 'realtime', ...data }));
+      }
+    });
   }
 });
 
